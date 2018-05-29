@@ -102,4 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Pycharm
 .idea/
+
+# Test image
+test.png
