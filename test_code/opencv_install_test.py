@@ -4,6 +4,7 @@
 import cv2
 
 print('OpenCV version: {}'.format(cv2.__version__))
+# Read test image and show it
 img = cv2.imread('test.png')
 cv2.imshow('Window', img)
 cv2.waitKey(0)
