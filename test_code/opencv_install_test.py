@@ -1,6 +1,5 @@
-# Code for showing webcam feed is taken from Adrian Rosebrock's tutorial
-# @ https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/
-
+# Code for showing webcam feed is taken from Adrian Rosebrock's tutorial @
+# https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/
 import cv2
 
 print('OpenCV version: {}'.format(cv2.__version__))
