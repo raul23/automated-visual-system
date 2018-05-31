@@ -107,8 +107,8 @@ venv.bak/
 .idea/
 
 # Test image
-test.png
-test.mp4
+test*.png
+test*.mp4
 
 # mac
 .DS_Store
