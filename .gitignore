@@ -106,7 +106,7 @@ venv.bak/
 # Pycharm
 .idea/
 
-# Test image
+# Test images and videos
 test*.png
 test*.mp4
 
