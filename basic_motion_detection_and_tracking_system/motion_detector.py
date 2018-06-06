@@ -7,7 +7,6 @@ import datetime
 import imutils  # Set of convenience functions for image processing
 import time
 import cv2
-import ipdb
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
