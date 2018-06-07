@@ -1,30 +1,53 @@
 '''
 Basic motion detection and tracking system
-Reference: https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/
+
+References:
+    https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/
+    https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/
 '''
 import argparse
 import datetime
-import imutils  # Set of convenience functions for image processing
+import json
 import time
+import sys
+
 import cv2
+import imutils  # Set of convenience functions for image processing
+import ipdb
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-# If --video switch not used, then webcam is used for motion detection
-ap.add_argument("-v", "--video", help="path to the video file")
-# --min-area: minimum size (pixels) for a region of an image to be
-# considered actual “motion”
-ap.add_argument("-a", "--min-area", type=int, default=100, help="minimum area size")
+ap.add_argument("-c", "--conf", required=True, help="path to the JSON configuration file")
 args = vars(ap.parse_args())
 
-# if the video argument is None, then we are reading from webcam
-if args.get("video", None) is None:
+ipdb.set_trace()
+
+# load the configuration
+conf = json.load(open(args["conf"]))
+
+# validate gaussian kernel size
+ksize = conf["gaussian_kernel_size"]
+if not ksize["width"] % 2 or ksize["width"] <= 0:
+    print("[ERROR] width of Gaussian kernel should be odd and positive")
+    sys.exit(1)
+if not ksize["height"] % 2 or ksize["height"] <= 0:
+    print("[ERROR] height of Gaussian kernel should be odd and positive")
+    sys.exit(1)
+
+if conf["resize_image_width"] == 0:
+    print("[INFO] images will not be resized")
+
+# setup camera: video file, list of images, or webcam feed
+if conf["video_path"]:
+    # reading from a video file
+    camera = cv2.VideoCapture(conf["video_path"])
+elif conf["image_path"]:
+    # reading from list of images with proper name format
+    camera = cv2.VideoCapture(conf["image_path"], cv2.CAP_IMAGES)
+else:
+    # reading from webcam feed
     camera = cv2.VideoCapture(0)
     time.sleep(0.25)
-
-# otherwise, we are reading from a video file
-else:
-    camera = cv2.VideoCapture(args["video"])
 
 # initialize the first frame in the video file/webcam stream
 # NOTE: first frame can be used to model the background of the video stream
@@ -33,6 +56,7 @@ else:
 firstFrame = None
 
 # loop over the frames of the video
+frame_num = 2
 while True:
     # grab the current frame and initialize the occupied/unoccupied text
     # grabbed (bool): indicates if `frame` was successfully read from the buffer
@@ -46,20 +70,25 @@ while True:
 
     # Preprocessing: preprare current frame for motion analysis
     # resize the frame to 500 pixels wide, convert it to grayscale, and blur it
-    frame = imutils.resize(frame, width=500)
+    # NOTE: image width is used when image is resized. If width is 0, image will
+    # not be resized.
+    if conf["resize_image_width"] > 0:
+        frame = imutils.resize(frame, width=conf["resize_image_width"])
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    gray = cv2.GaussianBlur(gray, (21, 21), 0)
+    gray = cv2.GaussianBlur(gray, (ksize["width"], ksize["height"]), 0)
 
     # if the first frame is None, initialize it
     if firstFrame is None:
         firstFrame = gray
         continue
 
+    ##############################################
     ### Start of motion detection and tracking ###
+    ##############################################
 
     # compute the absolute difference between the current frame and first frame
     frameDelta = cv2.absdiff(firstFrame, gray)
-    thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
+    thresh = cv2.threshold(frameDelta, conf["delta_thresh"], 255, cv2.THRESH_BINARY)[1]
 
     # dilate the thresholded image to fill in holes, then find contours on
     # thresholded image
@@ -70,7 +99,9 @@ while True:
     # loop over the contours
     for c in cnts:
         # if the contour is too small, ignore it
-        if cv2.contourArea(c) < args["min_area"]:
+        # --min-area: minimum size (pixels) for a region of an image to be
+        # considered actual “motion”
+        if cv2.contourArea(c) < conf["min_area"]:
             continue
 
         # compute the bounding box for the contour, draw it on the frame,
@@ -79,11 +110,33 @@ while True:
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         text = "Occupied"
 
-    # draw the text (top left) and timestamp (bottom left) on the frame
+    # draw the text (top left), timestamp (bottom left), and frame # (top right)
+    # on the current frame
+    # NOTE 1: the y-axis goes positive downwards (instead of upwards as in the
+    # cartesian coordinate system)
+    #
+    # (0,0) --------> (x)
+    #   |
+    #   |
+    #   |
+    #   |
+    #   v (y)
+    #
+    #
+    # NOTE 2: frame.shape[0] = maximum y-coordinate
+    #         frame.shape[1] = maximum x-coordinate
+    #
+    # Thus, top-left     = (0, 0)
+    #       top-right    = (frame.shape[1], 0)
+    #       bottom-left  = (0, frame.shape[0])
+    #       bottom-right = (frame.shape[1], frame.shape[0])
     cv2.putText(frame, "Room Status: {}".format(text), (10, 20),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-    cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
-                (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
+    if conf["show_datetime"]:
+        cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
+                    (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
+    cv2.putText(frame, "Frame # {}".format(20000),
+                (frame.shape[1] - 90, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
 
     # show the frame and record if the user presses a key
     cv2.imshow("Security Feed", frame)
@@ -91,9 +144,17 @@ while True:
     cv2.imshow("Frame Delta", frameDelta)
     key = cv2.waitKey(1) & 0xFF
 
+    # NOTE: path to the folder where threes set of images (security feed,
+    # thresold and frame delta) will be saved
+
     # if the `q` key is pressed, break from the lop
     if key == ord("q"):
         break
+
+    frame_num += 1
+
+    if frame_num == 50:
+        ipdb.set_trace()
 
 # cleanup the camera and close any open windows
 camera.release()
