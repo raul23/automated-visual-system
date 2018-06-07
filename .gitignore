@@ -112,3 +112,6 @@ test*.mp4
 
 # mac
 .DS_Store
+
+# my json config file
+my_conf.json
