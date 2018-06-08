@@ -35,7 +35,7 @@ if __name__ == '__main__':
     ap.add_argument("-c", "--conf", required=True, help="path to the JSON configuration file")
     args = vars(ap.parse_args())
 
-    ipdb.set_trace()
+    # ipdb.set_trace()
 
     # TODO: explain format for image filenames, pad to length ...
 
