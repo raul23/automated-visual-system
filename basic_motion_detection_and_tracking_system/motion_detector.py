@@ -1,10 +1,10 @@
-'''
+"""
 Basic motion detection and tracking system
 
 References:
     https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/
     https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/
-'''
+"""
 import argparse
 import datetime
 import json
@@ -14,14 +14,27 @@ import time
 
 import cv2
 import imutils  # Set of convenience functions for image processing
-# import ipdb
+import ipdb
+
+
+def write_image(path, image, overwrite_image=True):
+    if os.path.isfile(path):
+        if overwrite_image:
+            cv2.imwrite(path, image)
+        else:
+            print("[DEBUG] file {} already exists and overwrite is switched off".format(path))
+    else:
+        print("[DEBUG] file {} doesn't exist".format(path))
+        print("[DEBUG] writing file {} ...".format(path))
+        cv2.imwrite(path, image)
+
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-c", "--conf", required=True, help="path to the JSON configuration file")
 args = vars(ap.parse_args())
 
-# ipdb.set_trace()
+ipdb.set_trace()
 
 # TODO: explain format for image filenames, pad to length ...
 
@@ -69,8 +82,7 @@ while True:
     (grabbed, frame) = camera.read()
     text = "Unoccupied"  # no activity in the room
 
-    # if the frame could not be grabbed, then we have reached the end
-    # of the video
+    # if the frame could not be grabbed, then we have reached the end of the video
     if not grabbed:
         break
 
@@ -91,8 +103,9 @@ while True:
         firstFrame = gray
         # Save background image
         if conf["saved_folder"]:
-            bi_filename = "background_image.png"
-            cv2.imwrite(os.path.join(conf["saved_folder"], bi_filename), frame)
+            bi_fname = "background_image.png"
+            bi_fname = os.path.join(conf["saved_folder"], bi_fname)
+            write_image(bi_fname, frame, conf["overwrite_image"])
         continue
 
     ##############################################
@@ -151,22 +164,25 @@ while True:
     cv2.putText(frame, "Frame # {}".format(frame_num),
                 (frame.shape[1] - 90, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
 
+    # NOTE: path to the folder where three sets of images (security feed,
+    # thresold and frame delta) will be saved
+    if conf["saved_folder"]:
+        sf_fname = "security_feed_{0:06d}.png".format(frame_num)
+        t_fname = "thresh_{0:06d}.png".format(frame_num)
+        fd_fname = "frame_delta_{0:06d}.png".format(frame_num)
+        sf_fname = os.path.join(conf["saved_folder"], sf_fname)
+        t_fname = os.path.join(conf["saved_folder"], t_fname)
+        fd_fname = os.path.join(conf["saved_folder"], fd_fname)
+        write_image(sf_fname, frame, conf["overwrite_image"])
+        write_image(t_fname, thresh, conf["overwrite_image"])
+        write_image(fd_fname, frameDelta, conf["overwrite_image"])
+
     # show the frame and record if the user presses a key
     cv2.imshow("Security Feed", frame)
     cv2.imshow("Thresh", thresh)
     cv2.imshow("Frame Delta", frameDelta)
-
-    # NOTE: path to the folder where three set of images (security feed,
-    # thresold and frame delta) will be saved
-    if conf["saved_folder"]:
-        sf_filename = "security_feed_{0:06d}.png".format(frame_num)
-        t_filename = "thresh_{0:06d}.png".format(frame_num)
-        fd_filename = "frame_delta_{0:06d}.png".format(frame_num)
-        cv2.imwrite(os.path.join(conf["saved_folder"], sf_filename), frame)
-        cv2.imwrite(os.path.join(conf["saved_folder"], t_filename), thresh)
-        cv2.imwrite(os.path.join(conf["saved_folder"], fd_filename), frameDelta)
-
     key = cv2.waitKey(1) & 0xFF
+
     # if the `q` key is pressed, break from the lop
     if key == ord("q"):
         break
