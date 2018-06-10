@@ -72,8 +72,6 @@ if __name__ == '__main__':
     ap.add_argument("-c", "--conf", required=True, help="path to the JSON configuration file")
     args = vars(ap.parse_args())
 
-    # ipdb.set_trace()
-
     # TODO: explain format for image filenames, pad to length ...
 
     # load the configuration
@@ -98,12 +96,17 @@ if __name__ == '__main__':
     if conf["base_saved_folder"] == 0:
         print("[INFO] Images will not be saved")
     else:
-        # Create folder for storing image results
+        # Create directory (main) for storing image results
         new_folder = os.path.join(conf["base_saved_folder"], timestamped("image_results"))
         new_folder = unique_foldername(new_folder)
         print("[INFO] Creating folder {}".format(new_folder))
         os.makedirs(new_folder)
         conf["saved_folder"] = new_folder
+        # Create folders for each set of images
+        for fname in ["security_feed", "thresh", "frame_delta"]:
+            image_folder = os.path.join(new_folder, fname)
+            print("[INFO] Creating folder {}".format(image_folder))
+            os.makedirs(image_folder)
 
     # setup camera: video file, list of images, or webcam feed
     if conf["video_path"]:
@@ -220,7 +223,7 @@ if __name__ == '__main__':
             for iname, image in image_sets.items():
                 inum = "{0:06d}".format(frame_num)
                 fname = "{}_{}.{}".format(iname, inum, conf["image_format"])
-                fname = os.path.join(conf["saved_folder"], fname)
+                fname = os.path.join(conf["saved_folder"], iname ,fname)
                 write_image(fname, image, conf["overwrite_image"])
 
         # show the frame and record if the user presses a key
