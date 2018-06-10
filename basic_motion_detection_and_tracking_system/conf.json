@@ -4,6 +4,8 @@
     "base_saved_folder": "PATH_TO_SAVED_IMAGES_FOLDER",
     "overwrite_image": true,
     "image_format": "jpg",
+    "start_frame": 1,
+    "end_frame": 0,
     "min_area": 500,
     "delta_thresh": 25,
     "resize_image_width": 500,

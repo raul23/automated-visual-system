@@ -108,6 +108,13 @@ if __name__ == '__main__':
             print("[INFO] Creating folder {}".format(image_folder))
             os.makedirs(image_folder)
 
+    if conf["start_frame"] == 0 or not conf["start_frame"]:
+        print("[WARNING] start_frame will be changed from {} to 1".format(conf["start_frame"]))
+        conf["start_frame"] = 1
+    if conf["end_frame"] == 0 or not conf["end_frame"]:
+        print("[INFO] end_frame is set to {}, thus motion detection will run "
+              "until last image".format(conf["end_frame"]))
+
     # setup camera: video file, list of images, or webcam feed
     if conf["video_path"]:
         # reading from a video file
@@ -127,117 +134,127 @@ if __name__ == '__main__':
     firstFrame = None
 
     # loop over the frames of the video
+    # The first frame is the background image and is numbered as frame number 1
     frame_num = 2
     while True:
-        # grab the current frame and initialize the occupied/unoccupied text
-        # grabbed (bool): indicates if `frame` was successfully read from the buffer
-        (grabbed, frame) = camera.read()
-        text = "Unoccupied"  # no activity in the room
+        if conf["start_frame"] <= frame_num <= conf["end_frame"]:
+            # grab the current frame and initialize the occupied/unoccupied text
+            # grabbed (bool): indicates if `frame` was successfully read from the buffer
+            (grabbed, frame) = camera.read()
+            text = "Unoccupied"  # no activity in the room
 
-        # if the frame could not be grabbed, then we have reached the end of the video
-        if not grabbed:
-            break
+            # if the frame could not be grabbed, then we have reached the end of the video
+            if not grabbed:
+                break
 
-        # Preprocessing: preprare current frame for motion analysis
-        # resize the frame to 500 pixels wide, convert it to grayscale, and blur it
-        # NOTE: image width is used when image is resized. If width is 0, image will
-        # not be resized.
-        if conf["resize_image_width"] > 0:
-            if frame.shape[1] <= conf["resize_image_width"]:
-                print("[DEBUG] Image is being resized to a width ({}) that is "
-                      "greater than its actual width ({})".format(conf["resize_image_width"], frame.shape[1]))
-            frame = imutils.resize(frame, width=conf["resize_image_width"])
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, (ksize["width"], ksize["height"]), 0)
+            # Preprocessing: prepare current frame for motion analysis
+            # resize the frame to 500 pixels wide, convert it to grayscale, and blur it
+            # NOTE: image width is used when image is resized. If width is 0, image will
+            # not be resized.
+            if conf["resize_image_width"] > 0:
+                if frame.shape[1] <= conf["resize_image_width"]:
+                    print("[DEBUG] Image is being resized to a width ({}) that is "
+                          "greater than its actual width ({})".format(conf["resize_image_width"], frame.shape[1]))
+                frame = imutils.resize(frame, width=conf["resize_image_width"])
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            gray = cv2.GaussianBlur(gray, (ksize["width"], ksize["height"]), 0)
 
-        # if the first frame is None, initialize it
-        if firstFrame is None:
-            firstFrame = gray
-            # Save background image
-            if conf["saved_folder"]:
-                bi_fname = "background_image.{}".format(conf["image_format"])
-                bi_fname = os.path.join(conf["saved_folder"], bi_fname)
-                write_image(bi_fname, frame, conf["overwrite_image"])
-            continue
-
-        ##############################################
-        ### Start of motion detection and tracking ###
-        ##############################################
-
-        # compute the absolute difference between the current frame and first frame
-        frameDelta = cv2.absdiff(firstFrame, gray)
-        thresh = cv2.threshold(frameDelta, conf["delta_thresh"], 255, cv2.THRESH_BINARY)[1]
-
-        # dilate the thresholded image to fill in holes, then find contours on
-        # thresholded image
-        thresh = cv2.dilate(thresh, None, iterations=2)
-        (_, cnts, _) = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
-                                        cv2.CHAIN_APPROX_SIMPLE)
-
-        # loop over the contours
-        for c in cnts:
-            # if the contour is too small, ignore it
-            # --min-area: minimum size (pixels) for a region of an image to be
-            # considered actual “motion”
-            if cv2.contourArea(c) < conf["min_area"]:
+            # if the first frame is None, initialize it
+            if firstFrame is None:
+                firstFrame = gray
+                # Save background image
+                if conf["saved_folder"]:
+                    bi_fname = "background_image.{}".format(conf["image_format"])
+                    bi_fname = os.path.join(conf["saved_folder"], bi_fname)
+                    write_image(bi_fname, frame, conf["overwrite_image"])
                 continue
 
-            # compute the bounding box for the contour, draw it on the frame,
-            # and update the text
-            (x, y, w, h) = cv2.boundingRect(c)
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            text = "Occupied"
+            ##############################################
+            ### Start of motion detection and tracking ###
+            ##############################################
 
-        # draw the text (top left), timestamp (bottom left), and frame # (top right)
-        # on the current frame
-        # NOTE 1: the y-axis goes positive downwards (instead of upwards as in the
-        # cartesian coordinate system)
-        #
-        # (0,0) --------> (x)
-        #   |
-        #   |
-        #   |
-        #   |
-        #   v (y)
-        #
-        #
-        # NOTE 2: frame.shape[0] = maximum y-coordinate
-        #         frame.shape[1] = maximum x-coordinate
-        #
-        # Thus, top-left     = (0, 0)
-        #       top-right    = (frame.shape[1], 0)
-        #       bottom-left  = (0, frame.shape[0])
-        #       bottom-right = (frame.shape[1], frame.shape[0])
-        cv2.putText(frame, "Room Status: {}".format(text), (10, 20),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-        if conf["show_datetime"]:
-            cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
-                        (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
-        cv2.putText(frame, "Frame # {}".format(frame_num),
-                    (frame.shape[1] - 90, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
+            # compute the absolute difference between the current frame and first frame
+            frameDelta = cv2.absdiff(firstFrame, gray)
+            thresh = cv2.threshold(frameDelta, conf["delta_thresh"], 255, cv2.THRESH_BINARY)[1]
 
-        # NOTE: path to the folder where three sets of images (security feed,
-        # thresold and frame delta) will be saved
-        if conf["saved_folder"]:
-            image_sets = {'security_feed': frame, 'thresh': thresh, 'frame_delta': frameDelta}
-            for iname, image in image_sets.items():
-                inum = "{0:06d}".format(frame_num)
-                fname = "{}_{}.{}".format(iname, inum, conf["image_format"])
-                fname = os.path.join(conf["saved_folder"], iname ,fname)
-                write_image(fname, image, conf["overwrite_image"])
+            # dilate the thresholded image to fill in holes, then find contours on
+            # thresholded image
+            thresh = cv2.dilate(thresh, None, iterations=2)
+            (_, cnts, _) = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+                                            cv2.CHAIN_APPROX_SIMPLE)
 
-        # show the frame and record if the user presses a key
-        cv2.imshow("Security Feed", frame)
-        cv2.imshow("Thresh", thresh)
-        cv2.imshow("Frame Delta", frameDelta)
-        key = cv2.waitKey(1) & 0xFF
+            # loop over the contours
+            for c in cnts:
+                # if the contour is too small, ignore it
+                # --min-area: minimum size (pixels) for a region of an image to be
+                # considered actual “motion”
+                if cv2.contourArea(c) < conf["min_area"]:
+                    continue
 
-        # if the `q` key is pressed, break from the lop
-        if key == ord("q"):
+                # compute the bounding box for the contour, draw it on the frame,
+                # and update the text
+                (x, y, w, h) = cv2.boundingRect(c)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                text = "Occupied"
+
+            # draw the text (top left), timestamp (bottom left), and frame # (top right)
+            # on the current frame
+            # NOTE 1: the y-axis goes positive downwards (instead of upwards as in the
+            # cartesian coordinate system)
+            #
+            # (0,0) --------> (x)
+            #   |
+            #   |
+            #   |
+            #   |
+            #   v (y)
+            #
+            #
+            # NOTE 2: frame.shape[0] = maximum y-coordinate
+            #         frame.shape[1] = maximum x-coordinate
+            #
+            # Thus, top-left     = (0, 0)
+            #       top-right    = (frame.shape[1], 0)
+            #       bottom-left  = (0, frame.shape[0])
+            #       bottom-right = (frame.shape[1], frame.shape[0])
+            cv2.putText(frame, "Room Status: {}".format(text), (10, 20),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            if conf["show_datetime"]:
+                cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
+                            (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
+            cv2.putText(frame, "Frame # {}".format(frame_num),
+                        (frame.shape[1] - 90, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
+
+            # NOTE: path to the folder where three sets of images (security feed,
+            # thresold and frame delta) will be saved
+            if conf["saved_folder"]:
+                image_sets = {'security_feed': frame, 'thresh': thresh, 'frame_delta': frameDelta}
+                for iname, image in image_sets.items():
+                    inum = "{0:06d}".format(frame_num)
+                    fname = "{}_{}.{}".format(iname, inum, conf["image_format"])
+                    fname = os.path.join(conf["saved_folder"], iname ,fname)
+                    write_image(fname, image, conf["overwrite_image"])
+
+            # show the frame and record if the user presses a key
+            cv2.imshow("Security Feed", frame)
+            cv2.imshow("Thresh", thresh)
+            cv2.imshow("Frame Delta", frameDelta)
+            key = cv2.waitKey(1) & 0xFF
+
+            # if the `q` key is pressed, break from the lop
+            if key == ord("q"):
+                break
+
+        elif frame_num > conf["end_frame"]:
+            print("[INFO] Reached end of frames: frame # {}".format(frame_num))
             break
+        else:
+            print("[INFO] Skipping frame number {}".format(frame_num))
 
         # update frame number
         frame_num += 1
+
+    print("[INFO] Number of frames processed: {}".format(frame_num - 1))
 
     # cleanup the camera and close any open windows
     camera.release()
