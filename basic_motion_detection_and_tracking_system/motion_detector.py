@@ -50,7 +50,7 @@ def unique_foldername(folder_path):
     while os.path.isdir(folder_path):
         counter += 1
         print('[INFO] Folder {} already exists, trying with counter {}!'.format(folder_path, counter))
-        new_path = '{}_{}'.format(folder_path, counter)
+        folder_path = '{}_{}'.format(folder_path, counter)
     return folder_path
 
 
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     ap.add_argument("-c", "--conf", required=True, help="path to the JSON configuration file")
     args = vars(ap.parse_args())
 
-    ipdb.set_trace()
+    # ipdb.set_trace()
 
     # TODO: explain format for image filenames, pad to length ...
 
@@ -95,11 +95,11 @@ if __name__ == '__main__':
     if conf["resize_image_width"] == 0:
         print("[INFO] Images will not be resized")
 
-    if conf["saved_folder"] == 0:
+    if conf["base_saved_folder"] == 0:
         print("[INFO] Images will not be saved")
     else:
         # Create folder for storing image results
-        new_folder = os.path.join(conf["saved_folder"], timestamped("image_results"))
+        new_folder = os.path.join(conf["base_saved_folder"], timestamped("image_results"))
         new_folder = unique_foldername(new_folder)
         print("[INFO] Creating folder {}".format(new_folder))
         os.makedirs(new_folder)
@@ -151,7 +151,6 @@ if __name__ == '__main__':
         if firstFrame is None:
             firstFrame = gray
             # Save background image
-            ipdb.set_trace()
             if conf["saved_folder"]:
                 bi_fname = "background_image.{}".format(conf["image_format"])
                 bi_fname = os.path.join(conf["saved_folder"], bi_fname)
