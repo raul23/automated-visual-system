@@ -9,6 +9,7 @@ import argparse
 import datetime
 import json
 import os
+from pathlib import Path
 import sys
 import time
 
@@ -17,15 +18,51 @@ import imutils  # Set of convenience functions for image processing
 import ipdb
 
 
+# This creates a timestamped filename/foldername so we don't overwrite our good work
+# ref.: https://stackoverflow.com/a/16713796
+def timestamped(fname, fmt='%Y%m%d-%H%M%S-{fname}'):
+    return datetime.datetime.now().strftime(fmt).format(fname=fname)
+
+
+# Return "folder_path/basename" if no file exists at this path. Otherwise,
+# sequentially insert "_[0-9]+" before the extension of `basename` and return the
+# first path for which no file is present.
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L295
+def unique_filename(folder_path, basename):
+    stem = Path(basename).stem
+    ext = Path(basename).suffix
+    new_path = os.path.join(folder_path, basename)
+    counter = 0
+    while os.path.isfile(new_path):
+        counter += 1
+        print('[INFO] File {} already exists in destination {}, trying with counter {}!'.format(new_path, folder_path, counter))
+        new_stem = '{}_{}'.format(stem, counter)
+        new_path = os.path.join(folder_path, new_stem) + ext
+    return new_path
+
+
+# Return "folder_path" if no folder exists at this path. Otherwise,
+# sequentially insert "_[0-9]+" before the end of `folder_path` and return the
+# first path for which no folder is present.
+# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L295
+def unique_foldername(folder_path):
+    counter = 0
+    while os.path.isdir(folder_path):
+        counter += 1
+        print('[INFO] Folder {} already exists, trying with counter {}!'.format(folder_path, counter))
+        new_path = '{}_{}'.format(folder_path, counter)
+    return folder_path
+
+
 def write_image(path, image, overwrite_image=True):
     if os.path.isfile(path):
         if overwrite_image:
             cv2.imwrite(path, image)
         else:
-            print("[DEBUG] file {} already exists and overwrite is switched off".format(path))
+            print("[DEBUG] File {} already exists and overwrite is switched off".format(path))
     else:
-        print("[DEBUG] file {} doesn't exist".format(path))
-        print("[DEBUG] writing file {} ...".format(path))
+        print("[DEBUG] File {} doesn't exist".format(path))
+        print("[DEBUG] Writing file {}".format(path))
         cv2.imwrite(path, image)
 
 
@@ -35,7 +72,7 @@ if __name__ == '__main__':
     ap.add_argument("-c", "--conf", required=True, help="path to the JSON configuration file")
     args = vars(ap.parse_args())
 
-    # ipdb.set_trace()
+    ipdb.set_trace()
 
     # TODO: explain format for image filenames, pad to length ...
 
@@ -45,21 +82,28 @@ if __name__ == '__main__':
     # validate gaussian kernel size
     ksize = conf["gaussian_kernel_size"]
     if not ksize["width"] % 2 or ksize["width"] <= 0:
-        print("[ERROR] width of Gaussian kernel should be odd and positive")
+        print("[ERROR] Width of Gaussian kernel should be odd and positive")
         sys.exit(1)
     if not ksize["height"] % 2 or ksize["height"] <= 0:
-        print("[ERROR] height of Gaussian kernel should be odd and positive")
+        print("[ERROR] Height of Gaussian kernel should be odd and positive")
         sys.exit(1)
 
     if conf["image_format"] not in ['jpg', 'png']:
-        print("[WARNING] image format ({}) is not supported. png will be used".format(conf["image_format"]))
+        print("[WARNING] Image format ({}) is not supported. png will be used".format(conf["image_format"]))
         conf["image_format"] = 'png'
 
     if conf["resize_image_width"] == 0:
-        print("[INFO] images will not be resized")
+        print("[INFO] Images will not be resized")
 
     if conf["saved_folder"] == 0:
-        print("[INFO] images will not be saved")
+        print("[INFO] Images will not be saved")
+    else:
+        # Create folder for storing image results
+        new_folder = os.path.join(conf["saved_folder"], timestamped("image_results"))
+        new_folder = unique_foldername(new_folder)
+        print("[INFO] Creating folder {}".format(new_folder))
+        os.makedirs(new_folder)
+        conf["saved_folder"] = new_folder
 
     # setup camera: video file, list of images, or webcam feed
     if conf["video_path"]:
@@ -97,7 +141,7 @@ if __name__ == '__main__':
         # not be resized.
         if conf["resize_image_width"] > 0:
             if frame.shape[1] <= conf["resize_image_width"]:
-                print("[DEBUG] image is being resized to a width ({}) that is "
+                print("[DEBUG] Image is being resized to a width ({}) that is "
                       "greater than its actual width ({})".format(conf["resize_image_width"], frame.shape[1]))
             frame = imutils.resize(frame, width=conf["resize_image_width"])
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -107,6 +151,7 @@ if __name__ == '__main__':
         if firstFrame is None:
             firstFrame = gray
             # Save background image
+            ipdb.set_trace()
             if conf["saved_folder"]:
                 bi_fname = "background_image.{}".format(conf["image_format"])
                 bi_fname = os.path.join(conf["saved_folder"], bi_fname)
