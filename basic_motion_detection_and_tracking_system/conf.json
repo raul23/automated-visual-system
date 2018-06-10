@@ -3,6 +3,7 @@
     "image_path": "PATH_TO_IMAGE_FOLDER",
     "saved_folder": "PATH_TO_SAVED_IMAGES_FOLDER",
     "overwrite_image": true,
+    "image_format": "jpg",
     "min_area": 500,
     "delta_thresh": 25,
     "resize_image_width": 500,

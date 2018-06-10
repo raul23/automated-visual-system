@@ -51,6 +51,10 @@ if __name__ == '__main__':
         print("[ERROR] height of Gaussian kernel should be odd and positive")
         sys.exit(1)
 
+    if conf["image_format"] not in ['jpg', 'png']:
+        print("[WARNING] image format ({}) is not supported. png will be used".format(conf["image_format"]))
+        conf["image_format"] = 'png'
+
     if conf["resize_image_width"] == 0:
         print("[INFO] images will not be resized")
 
@@ -104,7 +108,7 @@ if __name__ == '__main__':
             firstFrame = gray
             # Save background image
             if conf["saved_folder"]:
-                bi_fname = "background_image.png"
+                bi_fname = "background_image.{}".format(conf["image_format"])
                 bi_fname = os.path.join(conf["saved_folder"], bi_fname)
                 write_image(bi_fname, frame, conf["overwrite_image"])
             continue
@@ -168,15 +172,12 @@ if __name__ == '__main__':
         # NOTE: path to the folder where three sets of images (security feed,
         # thresold and frame delta) will be saved
         if conf["saved_folder"]:
-            sf_fname = "security_feed_{0:06d}.png".format(frame_num)
-            t_fname = "thresh_{0:06d}.png".format(frame_num)
-            fd_fname = "frame_delta_{0:06d}.png".format(frame_num)
-            sf_fname = os.path.join(conf["saved_folder"], sf_fname)
-            t_fname = os.path.join(conf["saved_folder"], t_fname)
-            fd_fname = os.path.join(conf["saved_folder"], fd_fname)
-            write_image(sf_fname, frame, conf["overwrite_image"])
-            write_image(t_fname, thresh, conf["overwrite_image"])
-            write_image(fd_fname, frameDelta, conf["overwrite_image"])
+            image_sets = {'security_feed': frame, 'thresh': thresh, 'frame_delta': frameDelta}
+            for iname, image in image_sets.items():
+                inum = "{0:06d}".format(frame_num)
+                fname = "{}_{}.{}".format(iname, inum, conf["image_format"])
+                fname = os.path.join(conf["saved_folder"], fname)
+                write_image(fname, image, conf["overwrite_image"])
 
         # show the frame and record if the user presses a key
         cv2.imshow("Security Feed", frame)
