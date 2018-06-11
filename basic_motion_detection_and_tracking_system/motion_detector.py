@@ -44,7 +44,6 @@ def unique_filename(folder_path, basename):
 # Return "folder_path" if no folder exists at this path. Otherwise,
 # sequentially insert "_[0-9]+" before the end of `folder_path` and return the
 # first path for which no folder is present.
-# ref.: https://github.com/na--/ebook-tools/blob/0586661ee6f483df2c084d329230c6e75b645c0b/lib.sh#L295
 def unique_foldername(folder_path):
     counter = 0
     while os.path.isdir(folder_path):
@@ -56,7 +55,9 @@ def unique_foldername(folder_path):
 
 def write_image(path, image, overwrite_image=True):
     if os.path.isfile(path):
+        print("[DEBUG] File {} already exist".format(path))
         if overwrite_image:
+            print("[DEBUG] Writing file {}".format(path))
             cv2.imwrite(path, image)
         else:
             print("[DEBUG] File {} already exists and overwrite is switched off".format(path))
@@ -77,6 +78,19 @@ if __name__ == '__main__':
     # load the configuration
     conf = json.load(open(args["conf"]))
 
+    ####################################
+    # Processing configuration options #
+    ####################################
+
+    # validate background model
+    background_models = ["first_frame", "weighted_average"]
+    if conf["background_model"] not in background_models:
+        print("[ERROR] Background model ({}) is not supported".format(conf["background_model"]))
+        print("[ERROR] Background models supported are {}".format(background_models))
+        sys.exit(1)
+    else:
+        print("[INFO] Background model used: {}".format(conf["background_model"]))
+
     # validate gaussian kernel size
     ksize = conf["gaussian_kernel_size"]
     if not ksize["width"] % 2 or ksize["width"] <= 0:
@@ -93,8 +107,9 @@ if __name__ == '__main__':
     if conf["resize_image_width"] == 0:
         print("[INFO] Images will not be resized")
 
-    if conf["base_saved_folder"] == 0:
+    if not conf["base_saved_folder"]:
         print("[INFO] Images will not be saved")
+        conf["saved_folder"] = ""
     else:
         # Create directory (main) for storing image results
         new_folder = os.path.join(conf["base_saved_folder"], timestamped("image_results"))
@@ -108,12 +123,16 @@ if __name__ == '__main__':
             print("[INFO] Creating folder {}".format(image_folder))
             os.makedirs(image_folder)
 
+    # ipdb.set_trace()
+
     if conf["start_frame"] == 0 or not conf["start_frame"]:
         print("[WARNING] start_frame will be changed from {} to 1".format(conf["start_frame"]))
         conf["start_frame"] = 1
     if conf["end_frame"] == 0 or not conf["end_frame"]:
         print("[INFO] end_frame is set to {}, thus motion detection will run "
               "until last image".format(conf["end_frame"]))
+        # TODO: use inf instead?
+        conf["end_frame"] = 1000000
 
     # setup camera: video file, list of images, or webcam feed
     if conf["video_path"]:
@@ -127,11 +146,19 @@ if __name__ == '__main__':
         camera = cv2.VideoCapture(0)
         time.sleep(0.25)
 
-    # initialize the first frame in the video file/webcam stream
-    # NOTE: first frame can be used to model the background of the video stream
+    ###########################
+    # Processing images/video #
+    ###########################
+
+    # initialize the first/average frame in the video file/webcam stream
+    # NOTE 1: first frame can be used to model the background of the video stream
     # We `assume` that the first frame should not have motion, it should just
     # contain background
-    firstFrame = None
+    # NOTE 2: the weighted mean of frames frame can also be used to model the
+    # background of the video stream
+    background_model_frame = None
+
+    # ipdb.set_trace()
 
     # loop over the frames of the video
     # The first frame is the background image and is numbered as frame number 1
@@ -159,29 +186,47 @@ if __name__ == '__main__':
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             gray = cv2.GaussianBlur(gray, (ksize["width"], ksize["height"]), 0)
 
-            # if the first frame is None, initialize it
-            if firstFrame is None:
-                firstFrame = gray
-                # Save background image
-                if conf["saved_folder"]:
-                    bi_fname = "background_image.{}".format(conf["image_format"])
-                    bi_fname = os.path.join(conf["saved_folder"], bi_fname)
-                    write_image(bi_fname, frame, conf["overwrite_image"])
+            # if frame representing background model is None, initialize it
+            if background_model_frame is None:
+                print("[INFO] starting background model ({})...".format(conf["background_model"]))
+                if conf["background_model"] == "first_frame":
+                    background_model_frame = gray
+                    # Save background image
+                    if conf["saved_folder"]:
+                        bi_fname = "background_image.{}".format(conf["image_format"])
+                        bi_fname = os.path.join(conf["saved_folder"], bi_fname)
+                        write_image(bi_fname, frame, conf["overwrite_image"])
+                else:
+                    assert conf["background_model"] == "weighted_average"
+                    # TODO: save background image
+                    background_model_frame = gray.copy().astype("float")
                 continue
 
             ##############################################
             ### Start of motion detection and tracking ###
             ##############################################
 
-            # compute the absolute difference between the current frame and first frame
-            frameDelta = cv2.absdiff(firstFrame, gray)
-            thresh = cv2.threshold(frameDelta, conf["delta_thresh"], 255, cv2.THRESH_BINARY)[1]
+            if conf["background_model"] == "first_frame":
+                # compute the absolute difference between the current frame and first frame
+                frameDelta = cv2.absdiff(background_model_frame, gray)
+            else:
+                assert conf["background_model"] == "weighted_average"
+                # accumulate the weighted average between the current frame and
+                # previous frames, then compute the difference between the current
+                # frame and running average
+                # TODO: save background image
+                cv2.accumulateWeighted(gray, background_model_frame, 0.5)
+                # TODO: why cv2.convertScaleAbs()?
+                frameDelta = cv2.absdiff(gray, cv2.convertScaleAbs(background_model_frame))
 
-            # dilate the thresholded image to fill in holes, then find contours on
-            # thresholded image
+            # threshold the delta image, dilate the thresholded image to fill
+            # in holes, then find contours on thresholded image
+            thresh = cv2.threshold(frameDelta, conf["delta_thresh"], 255, cv2.THRESH_BINARY)[1]
             thresh = cv2.dilate(thresh, None, iterations=2)
             (_, cnts, _) = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
                                             cv2.CHAIN_APPROX_SIMPLE)
+
+            # ipdb.set_trace()
 
             # loop over the contours
             for c in cnts:

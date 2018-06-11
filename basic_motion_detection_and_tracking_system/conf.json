@@ -1,4 +1,5 @@
 {
+    "background_model": "first_frame",
     "video_path": "PATH_TO_VIDEO_FILE",
     "image_path": "PATH_TO_IMAGE_FOLDER",
     "base_saved_folder": "PATH_TO_SAVED_IMAGES_FOLDER",
