@@ -114,6 +114,9 @@ test*.mp4
 test_motion_detector.py
 test_my_conf.json
 
+# Notes
+notes.txt
+
 # mac
 .DS_Store
 

@@ -244,24 +244,6 @@ if __name__ == '__main__':
 
             # draw the text (top left), timestamp (bottom left), and frame # (top right)
             # on the current frame
-            # NOTE 1: the y-axis goes positive downwards (instead of upwards as in the
-            # cartesian coordinate system)
-            #
-            # (0,0) --------> (x)
-            #   |
-            #   |
-            #   |
-            #   |
-            #   v (y)
-            #
-            #
-            # NOTE 2: frame.shape[0] = maximum y-coordinate
-            #         frame.shape[1] = maximum x-coordinate
-            #
-            # Thus, top-left     = (0, 0)
-            #       top-right    = (frame.shape[1], 0)
-            #       bottom-left  = (0, frame.shape[0])
-            #       bottom-right = (frame.shape[1], frame.shape[0])
             cv2.putText(frame, "Room Status: {}".format(text), (10, 20),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             if conf["show_datetime"]:
@@ -280,15 +262,17 @@ if __name__ == '__main__':
                     fname = os.path.join(conf["saved_folder"], iname ,fname)
                     write_image(fname, image, conf["overwrite_image"])
 
-            # show the frame and record if the user presses a key
-            cv2.imshow("Security Feed", frame)
-            cv2.imshow("Thresh", thresh)
-            cv2.imshow("Frame Delta", frameDelta)
-            key = cv2.waitKey(1) & 0xFF
+            # check to see if the frames should be displayed to screen
+            if conf["show_video"]:
+                # show the frame and record if the user presses a key
+                cv2.imshow("Security Feed", frame)
+                cv2.imshow("Thresh", thresh)
+                cv2.imshow("Frame Delta", frameDelta)
+                key = cv2.waitKey(1) & 0xFF
 
-            # if the `q` key is pressed, break from the lop
-            if key == ord("q"):
-                break
+                # if the `q` key is pressed, break from the lop
+                if key == ord("q"):
+                    break
 
         elif frame_num > conf["end_frame"]:
             print("[INFO] Reached end of frames: frame # {}".format(frame_num))
