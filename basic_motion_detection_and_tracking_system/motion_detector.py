@@ -10,12 +10,19 @@ import datetime
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
 import time
 
 import cv2
 import imutils  # Set of convenience functions for image processing
 import ipdb
+
+
+# ref.: https://stackoverflow.com/a/12412153
+#       https://stackoverflow.com/a/667754
+def get_full_command_line():
+    return subprocess.list2cmdline(sys.argv)
 
 
 # This creates a timestamped filename/foldername so we don't overwrite our good work
@@ -123,8 +130,6 @@ if __name__ == '__main__':
             print("[INFO] Creating folder {}".format(image_folder))
             os.makedirs(image_folder)
 
-    # ipdb.set_trace()
-
     if conf["start_frame"] == 0 or not conf["start_frame"]:
         print("[WARNING] start_frame will be changed from {} to 1".format(conf["start_frame"]))
         conf["start_frame"] = 1
@@ -146,6 +151,15 @@ if __name__ == '__main__':
         camera = cv2.VideoCapture(0)
         time.sleep(0.25)
 
+    # Save configuration file and command line
+    if conf["saved_folder"]:
+        print("[INFO] saving configuration file and command line")
+        with open(os.path.join(conf["saved_folder"], 'conf.json'), 'w') as outfile:
+            # ref.: https://stackoverflow.com/a/20776329
+            json.dump(conf, outfile, indent=4, ensure_ascii = False)
+        with open(os.path.join(conf["saved_folder"], 'command.txt'), 'w') as outfile:
+            outfile.write(get_full_command_line())
+
     ###########################
     # Processing images/video #
     ###########################
@@ -157,8 +171,6 @@ if __name__ == '__main__':
     # NOTE 2: the weighted mean of frames frame can also be used to model the
     # background of the video stream
     background_model_frame = None
-
-    # ipdb.set_trace()
 
     # loop over the frames of the video
     # The first frame is the background image and is numbered as frame number 1
@@ -188,7 +200,7 @@ if __name__ == '__main__':
 
             # if frame representing background model is None, initialize it
             if background_model_frame is None:
-                print("[INFO] starting background model ({})...".format(conf["background_model"]))
+                print("[DEBUG] starting background model ({})...".format(conf["background_model"]))
                 if conf["background_model"] == "first_frame":
                     background_model_frame = gray
                     # Save background image
@@ -275,10 +287,10 @@ if __name__ == '__main__':
                     break
 
         elif frame_num > conf["end_frame"]:
-            print("[INFO] Reached end of frames: frame # {}".format(frame_num))
+            print("[DEBUG] Reached end of frames: frame # {}".format(frame_num))
             break
         else:
-            print("[INFO] Skipping frame number {}".format(frame_num))
+            print("[DEBUG] Skipping frame number {}".format(frame_num))
 
         # update frame number
         frame_num += 1
