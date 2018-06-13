@@ -120,5 +120,6 @@ notes.txt
 # mac
 .DS_Store
 
-# my json config file
+# my json config and logging files
 my_conf.json
+my_logging_conf.json

@@ -1,4 +1,6 @@
 {
+    "disable_logging": false,
+    "logging_conf_path": "logging_conf.json",
     "background_model": "first_frame",
     "video_path": "PATH_TO_VIDEO_FILE",
     "image_path": "PATH_TO_IMAGE_FOLDER",

@@ -8,6 +8,8 @@ References:
 import argparse
 import datetime
 import json
+import linecache
+import logging.config
 import os
 from pathlib import Path
 import subprocess
@@ -19,10 +21,91 @@ import imutils  # Set of convenience functions for image processing
 import ipdb
 
 
+# Get the logger
+if __name__ == '__main__':
+    # When run as a script
+    logger = logging.getLogger('{}.{}'.format(os.path.basename(os.getcwd()), os.path.splitext(__file__)[0]))
+else:
+    # When imported as a module
+    # TODO: test this part when imported as a module
+    logger = logging.getLogger('{}.{}'.format(os.path.basename(os.path.dirname(__file__)), __name__))
+
+
+def exit_from_program(code_status=1):
+    logger.error('Exiting program')
+    sys.exit(code_status)
+
+
+def file_exists(path):
+    """
+    Checks if both a file exists and it is a file. Returns True if it is the
+    case (can be a file or file symlink).
+    ref.: http://stackabuse.com/python-check-if-a-file-or-directory-exists/
+    :param path: path to check if it points to a file
+    :return bool: True if it file exists and is a file. False otherwise.
+    """
+    path = os.path.expanduser(path)
+    return os.path.isfile(path)
+
+
 # ref.: https://stackoverflow.com/a/12412153
 #       https://stackoverflow.com/a/667754
 def get_full_command_line():
-    return subprocess.list2cmdline(sys.argv)
+    return "python {}".format(subprocess.list2cmdline(sys.argv))
+
+
+def get_full_exception(error=None):
+    """
+    For a given exception, return filename, line number, the line itself, and
+    exception description.
+    ref.: https://stackoverflow.com/a/20264059
+    :return: TODO
+    """
+    exc_type, exc_obj, tb = sys.exc_info()
+    f = tb.tb_frame
+    lineno = tb.tb_lineno
+    filename = f.f_code.co_filename
+    linecache.checkcache(filename)
+    line = linecache.getline(filename, lineno, f.f_globals)
+    if error is None:
+        err_desc = exc_obj
+    else:
+        err_desc = '{}: {}'.format(repr(error).split('(')[0], exc_obj)
+    # TODO: find a way to add the error description (e.g. AttributeError) without
+    # having to provide the error description as input to the function
+    exception_msg = 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), err_desc)
+    return exception_msg
+
+
+# f: file object
+def load_json(f):
+    try:
+        data = json.load(f)
+    except json.JSONDecodeError as e:
+        logger.error(get_full_exception(e))
+        return None
+    return data
+
+
+def setup_logging(config_path):
+    if not file_exists(config_path):
+        logger.error("Logging configuration file doesn't exit: {}".format(config_path))
+        return None
+    config_dict = None
+    ext = Path(config_path).suffix
+    with open(config_path, 'r') as f:
+        if ext == '.json':
+            config_dict = load_json(f)
+        else:
+            logger.error('File format for logging configuration file not '
+                         'supported: {}'.format(config_path))
+    try:
+        logging.config.dictConfig(config_dict)
+    except ValueError as e:
+        get_full_exception(e)
+        config_dict = None
+
+    return config_dict
 
 
 # This creates a timestamped filename/foldername so we don't overwrite our good work
@@ -42,7 +125,7 @@ def unique_filename(folder_path, basename):
     counter = 0
     while os.path.isfile(new_path):
         counter += 1
-        print('[INFO] File {} already exists in destination {}, trying with counter {}!'.format(new_path, folder_path, counter))
+        logger.info('File {} already exists in destination {}, trying with counter {}!'.format(new_path, folder_path, counter))
         new_stem = '{}_{}'.format(stem, counter)
         new_path = os.path.join(folder_path, new_stem) + ext
     return new_path
@@ -55,26 +138,30 @@ def unique_foldername(folder_path):
     counter = 0
     while os.path.isdir(folder_path):
         counter += 1
-        print('[INFO] Folder {} already exists, trying with counter {}!'.format(folder_path, counter))
+        logger.info('Folder {} already exists, trying with counter {}!'.format(folder_path, counter))
         folder_path = '{}_{}'.format(folder_path, counter)
     return folder_path
 
 
 def write_image(path, image, overwrite_image=True):
     if os.path.isfile(path):
-        print("[DEBUG] File {} already exist".format(path))
+        logger.debug("File {} already exist".format(path))
         if overwrite_image:
-            print("[DEBUG] Writing file {}".format(path))
+            logger.debug("Writing file {}".format(path))
             cv2.imwrite(path, image)
         else:
-            print("[DEBUG] File {} already exists and overwrite is switched off".format(path))
+            logger.debug("File {} already exists and overwrite is switched off".format(path))
     else:
-        print("[DEBUG] File {} doesn't exist".format(path))
-        print("[DEBUG] Writing file {}".format(path))
+        logger.debug("File {} doesn't exist".format(path))
+        logger.debug("Writing file {}".format(path))
         cv2.imwrite(path, image)
 
 
 if __name__ == '__main__':
+    # configure root logger's level and format
+    # NOTE: `logger` will inherit config options from the root logger
+    logging.basicConfig(level=logging.DEBUG, format="%(levelname)s %(message)s")
+
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
     ap.add_argument("-c", "--conf", required=True, help="path to the JSON configuration file")
@@ -82,60 +169,87 @@ if __name__ == '__main__':
 
     # TODO: explain format for image filenames, pad to length ...
 
-    # load the configuration
+    # load the configuration file
     conf = json.load(open(args["conf"]))
 
     ####################################
     # Processing configuration options #
     ####################################
 
-    # validate background model
-    background_models = ["first_frame", "weighted_average"]
-    if conf["background_model"] not in background_models:
-        print("[ERROR] Background model ({}) is not supported".format(conf["background_model"]))
-        print("[ERROR] Background models supported are {}".format(background_models))
-        sys.exit(1)
-    else:
-        print("[INFO] Background model used: {}".format(conf["background_model"]))
-
-    # validate gaussian kernel size
-    ksize = conf["gaussian_kernel_size"]
-    if not ksize["width"] % 2 or ksize["width"] <= 0:
-        print("[ERROR] Width of Gaussian kernel should be odd and positive")
-        sys.exit(1)
-    if not ksize["height"] % 2 or ksize["height"] <= 0:
-        print("[ERROR] Height of Gaussian kernel should be odd and positive")
-        sys.exit(1)
-
-    if conf["image_format"] not in ['jpg', 'png']:
-        print("[WARNING] Image format ({}) is not supported. png will be used".format(conf["image_format"]))
-        conf["image_format"] = 'png'
-
-    if conf["resize_image_width"] == 0:
-        print("[INFO] Images will not be resized")
-
     if not conf["base_saved_folder"]:
-        print("[INFO] Images will not be saved")
+        logger.info("Images will not be saved")
         conf["saved_folder"] = ""
     else:
         # Create directory (main) for storing image results
         new_folder = os.path.join(conf["base_saved_folder"], timestamped("image_results"))
         new_folder = unique_foldername(new_folder)
-        print("[INFO] Creating folder {}".format(new_folder))
+        logger.info("Creating folder {}".format(new_folder))
         os.makedirs(new_folder)
         conf["saved_folder"] = new_folder
         # Create folders for each set of images
         for fname in ["security_feed", "thresh", "frame_delta"]:
             image_folder = os.path.join(new_folder, fname)
-            print("[INFO] Creating folder {}".format(image_folder))
+            logger.info("Creating folder {}".format(image_folder))
             os.makedirs(image_folder)
 
+    # Setup logging
+    logger.info("Setup logging")
+    if not conf["logging_conf_path"] or setup_logging(conf["logging_conf_path"]) is None:
+        logger.error("Logging could not be setup from configuration file")
+        logger.warning("Basic logging will be used instead")
+    else:
+        # Log to the stdout only, not to any other stream (e.g. file, socket)
+        handlers = logger.handlers
+        logger.handlers = []
+        sh = logging.StreamHandler(sys.stdout)
+        sh.formatter = logging.Formatter("%(levelname)s %(message)s")
+        logger.addHandler(sh)
+        logger.info("Updating logger's base filename")
+        logger.handlers = handlers
+        if conf["saved_folder"]:
+            # Update logger's base filename
+            # NOTE: all handlers' baseFilename are updated
+            for handler in logger.handlers:
+                # close() is needed before updating the handler's baseFilename
+                # and os.path.abspath() must be used
+                # ref.: https://stackoverflow.com/a/35120050
+                handler.close()
+                base_filename = os.path.basename(handler.__getattribute__("baseFilename"))
+                new_filename = os.path.abspath(os.path.join(conf["saved_folder"], base_filename))
+                handler.__setattr__("baseFilename", new_filename)
+        logger.info("Logging is enabled")
+
+    # validate background model
+    background_models = ["first_frame", "weighted_average"]
+    if conf["background_model"] not in background_models:
+        logger.error("Background model ({}) is not supported".format(conf["background_model"]))
+        logger.error("Background models supported are {}".format(background_models))
+        exit_from_program()
+    else:
+        logger.info("Background model used: {}".format(conf["background_model"]))
+
+    # validate gaussian kernel size
+    ksize = conf["gaussian_kernel_size"]
+    if not ksize["width"] % 2 or ksize["width"] <= 0:
+        logger.error("Width of Gaussian kernel should be odd and positive")
+        sys.exit(1)
+    if not ksize["height"] % 2 or ksize["height"] <= 0:
+        logger.error("Height of Gaussian kernel should be odd and positive")
+        exit_from_program()
+
+    if conf["image_format"] not in ['jpg', 'png']:
+        logger.warning("Image format ({}) is not supported. png will be used".format(conf["image_format"]))
+        conf["image_format"] = 'png'
+
+    if conf["resize_image_width"] == 0:
+        logger.info("Images will not be resized")
+
     if conf["start_frame"] == 0 or not conf["start_frame"]:
-        print("[WARNING] start_frame will be changed from {} to 1".format(conf["start_frame"]))
+        logger.warning("start_frame will be changed from {} to 1".format(conf["start_frame"]))
         conf["start_frame"] = 1
     if conf["end_frame"] == 0 or not conf["end_frame"]:
-        print("[INFO] end_frame is set to {}, thus motion detection will run "
-              "until last image".format(conf["end_frame"]))
+        logger.info("end_frame is set to {}, thus motion detection will run "
+                    "until last image".format(conf["end_frame"]))
         # TODO: use inf instead?
         conf["end_frame"] = 1000000
 
@@ -153,7 +267,7 @@ if __name__ == '__main__':
 
     # Save configuration file and command line
     if conf["saved_folder"]:
-        print("[INFO] saving configuration file and command line")
+        logger.info("Saving configuration file and command line")
         with open(os.path.join(conf["saved_folder"], 'conf.json'), 'w') as outfile:
             # ref.: https://stackoverflow.com/a/20776329
             json.dump(conf, outfile, indent=4, ensure_ascii = False)
@@ -192,15 +306,15 @@ if __name__ == '__main__':
             # not be resized.
             if conf["resize_image_width"] > 0:
                 if frame.shape[1] <= conf["resize_image_width"]:
-                    print("[DEBUG] Image is being resized to a width ({}) that is "
-                          "greater than its actual width ({})".format(conf["resize_image_width"], frame.shape[1]))
+                    logger.debug("Image is being resized to a width ({}) that is "
+                                 "greater than its actual width ({})".format(conf["resize_image_width"], frame.shape[1]))
                 frame = imutils.resize(frame, width=conf["resize_image_width"])
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             gray = cv2.GaussianBlur(gray, (ksize["width"], ksize["height"]), 0)
 
             # if frame representing background model is None, initialize it
             if background_model_frame is None:
-                print("[DEBUG] starting background model ({})...".format(conf["background_model"]))
+                logger.debug("Starting background model ({})...".format(conf["background_model"]))
                 if conf["background_model"] == "first_frame":
                     background_model_frame = gray
                     # Save background image
@@ -237,8 +351,6 @@ if __name__ == '__main__':
             thresh = cv2.dilate(thresh, None, iterations=2)
             (_, cnts, _) = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
                                             cv2.CHAIN_APPROX_SIMPLE)
-
-            # ipdb.set_trace()
 
             # loop over the contours
             for c in cnts:
@@ -287,15 +399,15 @@ if __name__ == '__main__':
                     break
 
         elif frame_num > conf["end_frame"]:
-            print("[DEBUG] Reached end of frames: frame # {}".format(frame_num))
+            logger.debug("Reached end of frames: frame # {}".format(frame_num))
             break
         else:
-            print("[DEBUG] Skipping frame number {}".format(frame_num))
+            logger.debug("Skipping frame number {}".format(frame_num))
 
         # update frame number
         frame_num += 1
 
-    print("[INFO] Number of frames processed: {}".format(frame_num - 1))
+    logger.info("Number of frames processed: {}".format(frame_num - 1))
 
     # cleanup the camera and close any open windows
     camera.release()
