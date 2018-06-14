@@ -4,7 +4,8 @@ Two basic background substitution models implemented:
 * First background model: **first frame** taken to model the background
 * Second background model: **weighted average** of frames
 
-The code implementation for these two background models are taken from Adrian Rosebrock tutorials @ www.pyimagesearch.com:
+The code implementation for these two background models are taken from Adrian
+Rosebrock tutorials @ www.pyimagesearch.com:
 * [first-frame background model](https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/)
 * [weighted-average-of-frames background model](https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/)
 
@@ -13,7 +14,7 @@ The code implementation for these two background models are taken from Adrian Ro
 
 - [Basic motion detection and tracking system](#basic-motion-detection-and-tracking-system)
 	- [Content](#content)
-	- [Sample GIFs](#sample-gifs)
+	- [Sample GIFs and videos](#sample-gifs-and-videos)
 	- [Files description](#files-description)
 	- [Installation and dependencies](#installation-and-dependencies)
 	- [Options and usage](#options-and-usage)
@@ -25,13 +26,25 @@ The code implementation for these two background models are taken from Adrian Ro
 
 <!-- /TOC -->
 
-## Sample GIFs
-Here are some sample GIFs of how the two basic background substitution methods work when applied on some of the images from the [SBMnet dataset](http://pione.dinf.usherbrooke.ca/dataset/): ...
+## Sample GIFs and videos
+Here are some sample GIFs and videos of how the two basic background
+substitution methods work when applied on some of the images from the
+[SBMnet dataset](http://pione.dinf.usherbrooke.ca/dataset/): ...
+
+As a side-note, if you are wondering how I generated the GIFs or videos from the
+test images, check my blog posts: [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
+and [Generate a movie from a sequence of images on a Mac]().
 
 ## Files description
-* `motion_detector.py`: main script that performs motion detection and tracking of objects on images/videos
+* `motion_detector.py`: main script that performs motion detection and tracking
+of objects on images/videos
+* `imutils.py`: module that only has the necessary functions from the [imutils](https://github.com/jrosebr1/imutils)
+package from [Adrian Rosebrock](https://www.pyimagesearch.com/). Hence, it is not necessary to install this package
+if only very few functions are used. For the moment, only the `resize()` function
+is used in the script.
 * `conf.json`: **main** configuration options
-* `logging_conf.json`: **logging** configuration options. By default, logging writes to a file.
+* `logging_conf.json`: **logging** configuration options. By default, logging
+writes to a file.
 
 ## Installation and dependencies
 These are the steps to use the Python script `motion_detector.py`:
@@ -48,7 +61,8 @@ I tested the code with Python 3.6, and macOS Sierra 10.12.6.
 
 ### Script configuration options (conf.json)
 
-The `motion_detector.py` script has the following configuration options (defined in conf.json):
+The `motion_detector.py` script has the following configuration options (defined
+in [conf.json](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/conf.json)):
 * `disable_logging`: bool
 * `logging_conf_path`: logging_conf.json.
 * `background_model`: "first_frame".
@@ -70,7 +84,8 @@ The `motion_detector.py` script has the following configuration options (defined
 * `gaussian_kernel_size`:
 
 ### Logging options (logging_conf.json)
-The `motion_detector.py` script has the following **logging** configuration options (defined in logging_conf.json):
+The `motion_detector.py` script has the following **logging** configuration
+options (defined in [logging_conf.json](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/logging_conf.json)):
 
 ### Script usage
 
@@ -84,4 +99,5 @@ In order of importance, these are the changes I will work on:
 * Make a Docker image
 
 ## License
-The code is licensed under the GNU GPL 3 license. See the [license](https://github.com/raul23/automated_visual_surveillance_system/blob/master/LICENSE) for more details.
+The code is licensed under the GNU GPL 3 license. See the [license](https://github.com/raul23/automated_visual_surveillance_system/blob/master/LICENSE)
+for more details.
