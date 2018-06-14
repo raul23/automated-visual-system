@@ -13,6 +13,7 @@ The code implementation for these two background models are taken from Adrian Ro
 
 - [Basic motion detection and tracking system](#basic-motion-detection-and-tracking-system)
 	- [Content](#content)
+	- [Sample GIFs](#sample-gifs)
 	- [Files description](#files-description)
 	- [Installation and dependencies](#installation-and-dependencies)
 	- [Options and usage](#options-and-usage)
@@ -23,6 +24,9 @@ The code implementation for these two background models are taken from Adrian Ro
 	- [License](#license)
 
 <!-- /TOC -->
+
+## Sample GIFs
+Here are some sample GIFs of how the two basic background substitution methods work when applied on some of the images from the [SBMnet dataset](http://pione.dinf.usherbrooke.ca/dataset/): ...
 
 ## Files description
 * `motion_detector.py`: main script that performs motion detection and tracking of objects on images/videos
