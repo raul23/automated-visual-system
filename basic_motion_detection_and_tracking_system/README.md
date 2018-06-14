@@ -1,3 +1,5 @@
+# Basic motion detection and tracking system
+
 Two basic background substitution models implemented: 
 * First background model: **first frame** taken to model the background
 * Second background model: **weighted average** of frames
@@ -7,7 +9,7 @@ The code implementation for these two background models are taken from Adrian Ro
 * [weighted-average-of-frames background model](https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/)
 
 
-Files description:
+## Files description
 * `motion_detector.py`: main script that performs motion detection and tracking of objects on images/videos
 * `conf.json`: **main** configuration options
 * `logging_conf.json`: **logging** configuration options. By default, logging writes to a file.
