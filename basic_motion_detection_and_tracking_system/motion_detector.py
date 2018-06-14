@@ -210,9 +210,12 @@ if __name__ == '__main__':
         conf["saved_folder"] = new_folder
         # Create folders for each set of images
         for fname in ["security_feed", "thresh", "frame_delta"]:
-            image_folder = os.path.join(new_folder, fname)
-            logger.debug("Creating folder {}".format(image_folder))
-            os.makedirs(image_folder)
+            if conf["save_{}_images".format(fname)]:
+                image_folder = os.path.join(new_folder, fname)
+                logger.debug("Creating folder {}".format(image_folder))
+                os.makedirs(image_folder)
+            else:
+                logger.debug("Folder for {} images not created".format(fname))
     else:
         logger.info("Images will not be saved")
         conf["saved_folder"] = ""
@@ -409,10 +412,13 @@ if __name__ == '__main__':
             if conf["saved_folder"]:
                 image_sets = {'security_feed': frame, 'thresh': thresh, 'frame_delta': frameDelta}
                 for iname, image in image_sets.items():
-                    inum = "{0:06d}".format(frame_num)
-                    fname = "{}_{}.{}".format(iname, inum, conf["image_format"])
-                    fname = os.path.join(conf["saved_folder"], iname ,fname)
-                    write_image(fname, image, conf["overwrite_image"])
+                    if conf["save_{}_images".format(iname)]:
+                        inum = "{0:06d}".format(frame_num)
+                        fname = "{}_{}.{}".format(iname, inum, conf["image_format"])
+                        fname = os.path.join(conf["saved_folder"], iname ,fname)
+                        write_image(fname, image, conf["overwrite_image"])
+                    else:
+                        logger.debug("{} image not saved: frame # {}".format(iname, frame_num))
 
             # check to see if the frames should be displayed to screen
             if conf["show_video"]:
