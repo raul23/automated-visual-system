@@ -17,7 +17,7 @@ import sys
 import time
 
 import cv2
-import imutils  # Set of convenience functions for image processing
+import imutils
 import ipdb
 
 
@@ -158,9 +158,19 @@ def write_image(path, image, overwrite_image=True):
 
 
 if __name__ == '__main__':
+    # TODO: use `logger` to log into stdout instead of having a separate logger
+    # that logs only into stdout
+    root_logger_init_level = logging.DEBUG
+    stdout_logger_init_level = logging.INFO
     # configure root logger's level and format
-    # NOTE: `logger` will inherit config options from the root logger
-    logging.basicConfig(level=logging.DEBUG, format="%(levelname)s %(message)s")
+    # NOTE: `logger` and `stdout_logger` will inherit config options from the root logger
+    logging.basicConfig(level=root_logger_init_level, format="%(message)s")
+    stdout_logger = logging.getLogger("stdout_logger")
+    sh = logging.StreamHandler(sys.stdout)
+    sh.formatter = logging.Formatter("%(message)s")
+    stdout_logger.addHandler(sh)
+    stdout_logger.setLevel(stdout_logger_init_level)
+    stdout_logger.propagate = False
 
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
@@ -176,48 +186,62 @@ if __name__ == '__main__':
     # Processing configuration options #
     ####################################
 
-    if not conf["base_saved_folder"]:
-        logger.info("Images will not be saved")
-        conf["saved_folder"] = ""
+    if conf["disable_logging"]:
+        logger.info("Logging will be disabled")
+        root_logger = logging.getLogger()
+        root_logger.setLevel(logging.INFO)
+        stdout_logger.setLevel(logging.INFO)
     else:
+        root_logger = logging.getLogger()
+        formatter = logging.Formatter("%(levelname)s %(message)s")
+        handlers = root_logger.handlers + stdout_logger.handlers
+        for handler in handlers:
+            if isinstance(handler, logging.StreamHandler):
+                handler.setFormatter(formatter)
+
+    stdout_logger.info("Starting application ...")
+
+    if conf["base_saved_folder"]:
         # Create directory (main) for storing image results
         new_folder = os.path.join(conf["base_saved_folder"], timestamped("image_results"))
         new_folder = unique_foldername(new_folder)
-        logger.info("Creating folder {}".format(new_folder))
+        logger.debug("Creating folder {}".format(new_folder))
         os.makedirs(new_folder)
         conf["saved_folder"] = new_folder
         # Create folders for each set of images
         for fname in ["security_feed", "thresh", "frame_delta"]:
             image_folder = os.path.join(new_folder, fname)
-            logger.info("Creating folder {}".format(image_folder))
+            logger.debug("Creating folder {}".format(image_folder))
             os.makedirs(image_folder)
+    else:
+        logger.info("Images will not be saved")
+        conf["saved_folder"] = ""
 
     # Setup logging
-    logger.info("Setup logging")
-    if not conf["logging_conf_path"] or setup_logging(conf["logging_conf_path"]) is None:
-        logger.error("Logging could not be setup from configuration file")
-        logger.warning("Basic logging will be used instead")
-    else:
-        # Log to the stdout only, not to any other stream (e.g. file, socket)
-        handlers = logger.handlers
-        logger.handlers = []
-        sh = logging.StreamHandler(sys.stdout)
-        sh.formatter = logging.Formatter("%(levelname)s %(message)s")
-        logger.addHandler(sh)
-        logger.info("Updating logger's base filename")
-        logger.handlers = handlers
-        if conf["saved_folder"]:
-            # Update logger's base filename
-            # NOTE: all handlers' baseFilename are updated
-            for handler in logger.handlers:
-                # close() is needed before updating the handler's baseFilename
-                # and os.path.abspath() must be used
-                # ref.: https://stackoverflow.com/a/35120050
-                handler.close()
-                base_filename = os.path.basename(handler.__getattribute__("baseFilename"))
-                new_filename = os.path.abspath(os.path.join(conf["saved_folder"], base_filename))
-                handler.__setattr__("baseFilename", new_filename)
-        logger.info("Logging is enabled")
+    # NOTE: logging is setup once main experiment directory is created
+    if not conf["disable_logging"]:
+        logger.debug("Setup logging")
+        if not conf["logging_conf_path"] or setup_logging(conf["logging_conf_path"]) is None:
+            logger.error("Logging could not be setup from configuration file")
+            logger.warning("Basic logging will be used instead")
+        else:
+            # Log to the stdout only, not to any other stream (e.g. file, socket)
+            stdout_logger.debug("Updating logger's base filename")
+            if conf["saved_folder"]:
+                # Update logger's base filename
+                # NOTE: all handlers' baseFilename are updated
+                for handler in logger.handlers:
+                    # close() is needed before updating the handler's baseFilename
+                    # and os.path.abspath() must be used
+                    # ref.: https://stackoverflow.com/a/35120050
+                    handler.close()
+                    base_filename = os.path.basename(handler.__getattribute__("baseFilename"))
+                    new_filename = os.path.abspath(os.path.join(conf["saved_folder"], base_filename))
+                    handler.__setattr__("baseFilename", new_filename)
+            else:
+                logger.error("Logging could not be setup")
+                exit_from_program()
+            logger.info("Logging is enabled")
 
     # validate background model
     background_models = ["first_frame", "weighted_average"]
@@ -254,14 +278,18 @@ if __name__ == '__main__':
         conf["end_frame"] = 1000000
 
     # setup camera: video file, list of images, or webcam feed
+    logger.info("Setup camera")
     if conf["video_path"]:
         # reading from a video file
+        logger.info("Reading video file ...")
         camera = cv2.VideoCapture(conf["video_path"])
     elif conf["image_path"]:
         # reading from list of images with proper name format
+        logger.info("Reading images ...")
         camera = cv2.VideoCapture(conf["image_path"], cv2.CAP_IMAGES)
     else:
         # reading from webcam feed
+        logger.info("Reading webcam feed ...")
         camera = cv2.VideoCapture(0)
         time.sleep(0.25)
 
@@ -394,8 +422,9 @@ if __name__ == '__main__':
                 cv2.imshow("Frame Delta", frameDelta)
                 key = cv2.waitKey(1) & 0xFF
 
-                # if the `q` key is pressed, break from the lop
+                # if the `q` key is pressed, break from the loop
                 if key == ord("q"):
+                    logger.debug("Q key pressed. Quitting program ...")
                     break
 
         elif frame_num > conf["end_frame"]:
