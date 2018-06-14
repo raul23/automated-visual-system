@@ -84,3 +84,4 @@ In order of importance, these are the changes I will work on:
 * Make a Docker image
 
 ## License
+The code is licensed under the GNU GPL 3 license. See the [license](https://github.com/raul23/automated_visual_surveillance_system/blob/master/LICENSE) for more details.
