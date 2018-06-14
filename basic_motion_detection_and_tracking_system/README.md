@@ -18,7 +18,7 @@ Dependencies:
 
 I tested the code with Python 3.6, and macOS Sierra 10.12.6.
  
-## Usage and options
+## Options and usage
 
 ### Script configuration options (conf.json)
 
@@ -48,7 +48,7 @@ The motion_detector.py script has the following **logging** configuration option
 
 ## Roadmap
 In order of importance, these are the changes I will work on:
-* Package the Python script [topmost]
+* Package the Python script [**topmost**]
 * Add unit tests
 * Make the code Python 2.7 compatible
 * Implement more sophisticated background substitution models
