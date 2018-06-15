@@ -264,8 +264,8 @@ if __name__ == '__main__':
         logger.error("Height of Gaussian kernel should be odd and positive")
         exit_from_program()
 
-    if conf["image_format"] not in ['jpg', 'png']:
-        logger.warning("Image format ({}) is not supported. png will be used".format(conf["image_format"]))
+    if conf["image_format"] not in ['jpg', 'jpeg', 'png']:
+        logger.error("Image format ({}) is not supported. png will be used".format(conf["image_format"]))
         conf["image_format"] = 'png'
 
     if conf["resize_image_width"] == 0:

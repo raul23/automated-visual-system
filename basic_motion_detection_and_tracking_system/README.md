@@ -9,11 +9,11 @@ Rosebrock's tutorials @ www.pyimagesearch.com:
 * [first-frame background model](https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/)
 * [weighted-average-of-frames background model](https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/)
 
-## Content
+## Contents
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Basic motion detection and tracking system](#basic-motion-detection-and-tracking-system)
-	- [Content](#content)
+	- [Contents](#contents)
 	- [Sample GIFs and videos](#sample-gifs-and-videos)
 	- [Files description](#files-description)
 	- [Installation and dependencies](#installation-and-dependencies)
@@ -63,24 +63,31 @@ I tested the code with Python 3.6, and macOS Sierra 10.12.6.
 
 The `motion_detector.py` script has the following configuration options (defined
 in [conf.json](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/conf.json)):
-* `disable_logging`: bool
-* `logging_conf_path`: logging_conf.json.
-* `background_model`: "first_frame".
-* `video_path`:
-* `image_path`:
-* `base_saved_folder`:
-* `save_security_feed_images`: true
-* `save_thresh_images`: true
-* `save_frame_delta_images`: true
-* `overwrite_image`: true
-* `image_format`: "png"
-* `show_video`: true
+* `disable_logging`: a boolean variable (true/false) that specifies whether logging should be disabled
+* `logging_conf_path`: absolute path to the JSON configuration file for setting up logging
+* `background_model`: choices are {"first_frame", "weighted_average"}. It is the
+type of background model, e.g. weighted average of frames
+* `video_path`: full path to the video to be processed
+* `image_path`: full path to the sequence of images to be processed.
+**Important**: the images must follow a naming pattern with zero paddings,
+e.g. image%06d.jpg.
+* `base_saved_folder`: full path to the folder for saving all the results from
+running the scripts, e.g. debugging logs, security feed images
+* `save_security_feed_images`: a boolean variable (true/false) that specifies
+whether the 'security feed' images will be saved
+* `save_thresh_images`:
+* `save_frame_delta_images`:
+* `overwrite_image`:
+* `image_format`: choices are {"png", "jpg", "jpeg"}. This is the format used
+when saving the resulting images. If image format is not supported, png format
+is used.
+* `show_video`:
 * `start_frame`: 0
 * `end_frame`: 0
 * `min_area`: 100
 * `delta_thresh`: 25
 * `resize_image_width`: 500
-* `show_datetime`: true
+* `show_datetime`:
 * `gaussian_kernel_size`:
 
 ### Logging options (logging_conf.json)
