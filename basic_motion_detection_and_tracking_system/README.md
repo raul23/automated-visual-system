@@ -5,7 +5,7 @@ Two basic background substitution models implemented:
 * Second background model: **weighted average** of frames
 
 The code implementation for these two background models are based from Adrian
-Rosebrock tutorials @ www.pyimagesearch.com:
+Rosebrock's tutorials @ www.pyimagesearch.com:
 * [first-frame background model](https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/)
 * [weighted-average-of-frames background model](https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/)
 
@@ -94,6 +94,7 @@ In order of importance, these are the changes I will work on:
 * Package the Python script [**topmost**]
 * Add unit tests
 * Make the code Python 2.7 compatible
+* Test the code on Linux
 * Implement more sophisticated background substitution models
 * Implement more sophisticated tracking systems (e.g. Kalman filter)
 * Make a Docker image
