@@ -4,7 +4,7 @@ Two basic background substitution models implemented:
 * First background model: **first frame** taken to model the background
 * Second background model: **weighted average** of frames
 
-The code implementation for these two background models are taken from Adrian
+The code implementation for these two background models are based from Adrian
 Rosebrock tutorials @ www.pyimagesearch.com:
 * [first-frame background model](https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/)
 * [weighted-average-of-frames background model](https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/)
