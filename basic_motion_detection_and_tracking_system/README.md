@@ -39,8 +39,8 @@ and [Generate a movie from a sequence of images on a Mac]().
 * `motion_detector.py`: main script that performs motion detection and tracking
 of objects on images/videos
 * `imutils.py`: module that only has the necessary functions from the [imutils](https://github.com/jrosebr1/imutils)
-package from [Adrian Rosebrock](https://www.pyimagesearch.com/). Hence, it is not necessary to install this package
-if only very few functions are used. For the moment, only the `resize()` function
+package from [Adrian Rosebrock](https://www.pyimagesearch.com/). Hence, it is not necessary to install the imutils package
+if only very few functions are used. For the moment, only the `resize()` function from the imutils package
 is used in the script.
 * `conf.json`: **main** configuration options
 * `logging_conf.json`: **logging** configuration options. By default, logging
@@ -75,20 +75,22 @@ e.g. image%06d.jpg.
 running the scripts, e.g. debugging logs, security feed images
 * `save_security_feed_images`: a boolean variable (true/false) that specifies
 whether the 'security feed' images will be saved
-* `save_thresh_images`:
-* `save_frame_delta_images`:
-* `overwrite_image`:
+* `save_thresh_images`: a boolean variable (true/false) that specifies whether the 'thresholded' images will be saved
+* `save_frame_delta_images`: a boolean variable (true/false) that specifies whether the 'frame delta' images will be saved
+* `overwrite_image`: a boolean variable (true/false) that specifies whether the already saved images in `.../base_saved_folder` can be overwritten
 * `image_format`: choices are {"png", "jpg", "jpeg"}. This is the format used
 when saving the resulting images. If image format is not supported, png format
-is used.
-* `show_video`:
-* `start_frame`: 0
-* `end_frame`: 0
-* `min_area`: 100
-* `delta_thresh`: 25
-* `resize_image_width`: 500
-* `show_datetime`:
-* `gaussian_kernel_size`:
+is used by default.
+* `show_video`: a boolean variable (true/false) that specifies whether to show the videos (for the different types of images) on screen
+* `start_frame`: an integer variable (default is 1) that specifies the starting frame to be processed
+* `end_frame`: an integer variable (default is 0) that specifies the ending frame to be processed. 0 refers to the last frame.
+* `min_area`: minimum size (in pixels) for a region of an image to be considered actual “motion”. If the region (contour) is too small, then it will be ignored, i.e. it will not be considered as motion.
+* `delta_thresh`: an integer variable (default is 25) that specifies
+* `resize_image_width`: an integer variable (default is 500) that specifies
+* `show_datetime`: a boolean variable (true/false) that specifies whether to show the date & time on each of the video
+* `gaussian_kernel_size`: a `dict` variable (default is 25) that specifies the width and height of the Gaussian kernel used ...:
+  * `width`: an integer variable (default is 21) that specifies the width of the Gaussian kernel
+  * `height`: an integer variable (default is 21) that specifies the height of the Gaussian kernel
 
 ### Logging options (logging_conf.json)
 The `motion_detector.py` script has the following **logging** configuration
