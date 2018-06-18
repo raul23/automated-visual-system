@@ -1,19 +1,8 @@
 # Basic motion detection and tracking system
-
-Two basic background substitution models implemented:
-* First background model: **first frame** taken to model the background
-* Second background model: **weighted average** of frames
-
-The code implementation for these two background models are based from Adrian
-Rosebrock's tutorials @ www.pyimagesearch.com:
-* [first-frame background model](https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/)
-* [weighted-average-of-frames background model](https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/)
-
-## Contents
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Basic motion detection and tracking system](#basic-motion-detection-and-tracking-system)
-	- [Contents](#contents)
+	- [Introduction](#introduction)
 	- [Sample GIFs and videos](#sample-gifs-and-videos)
 	- [Files description](#files-description)
 	- [Installation and dependencies](#installation-and-dependencies)
@@ -25,6 +14,29 @@ Rosebrock's tutorials @ www.pyimagesearch.com:
 	- [License](#license)
 
 <!-- /TOC -->
+
+## Introduction
+A basic motion detection and tracking system is implemented using two basic
+background substitution models implemented:
+* First background model: **first frame** taken to model the background
+* Second background model: **weighted average** of frames
+
+The code implementation for these two background models are based from Adrian
+Rosebrock's tutorials @ www.pyimagesearch.com:
+* [first-frame background model](https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/)
+* [weighted-average-of-frames backgroundmodel](https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/)
+
+For each motion detected, a bounding box is drawn around the object like the
+following:
+
+The system can take as inputs:
+* a video from a file (e.g. a pre-recorded security camera video), or your webcam
+feed
+* an image sequence (**png** or **jpg**) having the naming pattern with zero
+paddings, e.g. image%06d.jpg.
+
+The system can be configured through a configuration file ([conf.json](#script-configuration-options-confjson)), and its
+logging can be setup with [logging_conf.json](#logging-options-loggingconfjson).
 
 ## Sample GIFs and videos
 Here are some sample GIFs and videos of how the two basic background
@@ -85,16 +97,17 @@ is used by default.
 * `start_frame`: an integer variable (default is 1) that specifies the starting frame to be processed
 * `end_frame`: an integer variable (default is 0) that specifies the ending frame to be processed. 0 refers to the last frame.
 * `min_area`: minimum size (in pixels) for a region of an image to be considered actual “motion”. If the region (contour) is too small, then it will be ignored, i.e. it will not be considered as motion.
-* `delta_thresh`: an integer variable (default is 25) that specifies
-* `resize_image_width`: an integer variable (default is 500) that specifies
+* `delta_thresh`: an integer variable (default is 25) that specifies the threshold value used for generating a binary image (thresholded image) out of a grayscale image ('frame delta' image). Every pixel in the 'frame delta' image greater than `delta_thresh` will be converted to white (i.e. foreground), and the other pixels to black (i.e. background).
+* `resize_image_width`: an integer variable (default is 500 pixels wide) that specifies the width in pixels the image should be resized to. If `resize_image_width` is 0, then the image will not be resized.
 * `show_datetime`: a boolean variable (true/false) that specifies whether to show the date & time on each of the video
-* `gaussian_kernel_size`: a `dict` variable (default is 25) that specifies the width and height of the Gaussian kernel used ...:
+* `gaussian_kernel_size`: a `dict` variable that specifies the width and height of the Gaussian kernel used for blurring an image:
   * `width`: an integer variable (default is 21) that specifies the width of the Gaussian kernel
   * `height`: an integer variable (default is 21) that specifies the height of the Gaussian kernel
 
 ### Logging options (logging_conf.json)
 The `motion_detector.py` script has the following **logging** configuration
 options (defined in [logging_conf.json](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/logging_conf.json)):
+* `formatters`: 
 
 ### Script usage
 
