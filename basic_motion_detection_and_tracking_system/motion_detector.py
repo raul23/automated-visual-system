@@ -201,9 +201,9 @@ if __name__ == '__main__':
 
     stdout_logger.info("Starting application ...")
 
-    if conf["base_saved_folder"]:
-        # Create directory (main) for storing image results
-        new_folder = os.path.join(conf["base_saved_folder"], timestamped("image_results"))
+    if conf["base_saved_directory"]:
+        # Create 'main' directory for storing image results
+        new_folder = os.path.join(conf["base_saved_directory"], timestamped("image_results"))
         new_folder = unique_foldername(new_folder)
         logger.debug("Creating folder {}".format(new_folder))
         os.makedirs(new_folder)
