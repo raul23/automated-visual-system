@@ -1,6 +1,21 @@
 # Basic motion detection and tracking system
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [Basic motion detection and tracking system](#basic-motion-detection-and-tracking-system)
+	- [Introduction](#introduction)
+	- [Sample GIFs and videos](#sample-gifs-and-videos)
+	- [Files description](#files-description)
+	- [Installation and dependencies](#installation-and-dependencies)
+	- [Options, usage, and inputs/outputs](#options-usage-and-inputsoutputs)
+		- [Script configuration options (conf.json)](#script-configuration-options-confjson)
+		- [Logging options (logging_conf.json)](#logging-options-loggingconfjson)
+		- [Script usage](#script-usage)
+		- [Script Inputs/Outputs](#script-inputsoutputs)
+	- [Roadmap](#roadmap)
+	- [License](#license)
+	- [Notes](#notes)
 
+<!-- /TOC -->
 ## Introduction
 A basic motion detection and tracking system is implemented using two basic
 background substitution models:
@@ -147,7 +162,8 @@ webcam feed.
 paddings, e.g. image%06d.jpg.
 
 The system **outputs** the following by *default* within the folder
-`.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`<sup id="go_back_note_01"><a href="#note_01">[1]</a></sup>:
+`.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`
+<sup id="go_back_note_01"><a href="#note_01">[1]</a></sup>:
 * `background_image.png`: image representing the background. Depending on the
 background model selected (*see the* `background_model` *option*), it can
 correspond to the first frame or a weighted average of current and past frames.
