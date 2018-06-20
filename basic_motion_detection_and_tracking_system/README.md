@@ -53,7 +53,9 @@ background models:
 <br/>
 <br/>
 <p align="center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/kmGVtWDSwNw" frameborder="0"  allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=YkmGVtWDSwNw
+" target="_blank"><img src="http://img.youtube.com/vi/kmGVtWDSwNw/0.jpg"
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 </p>
 <br/>
 <br/>
