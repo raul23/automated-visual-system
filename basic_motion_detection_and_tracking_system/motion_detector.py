@@ -248,7 +248,7 @@ if __name__ == '__main__':
             logger.info("Logging is enabled")
 
     # validate background model
-    background_models = ["first_frame", "weighted_average"]
+    background_models = ["first_frame", "gitA"]
     if conf["background_model"] not in background_models:
         logger.error("Background model ({}) is not supported".format(conf["background_model"]))
         logger.error("Background models supported are {}".format(background_models))
