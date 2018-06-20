@@ -203,6 +203,7 @@ if __name__ == '__main__':
 
     if conf["base_saved_directory"]:
         # Create 'main' directory for storing image results
+        # TODO: first check that base_saved_directory  exists. If it doesn't exit, create it.
         new_folder = os.path.join(conf["base_saved_directory"], timestamped("image_results"))
         new_folder = unique_foldername(new_folder)
         logger.debug("Creating folder {}".format(new_folder))
@@ -284,17 +285,20 @@ if __name__ == '__main__':
     logger.info("Setup camera")
     if conf["video_path"]:
         # reading from a video file
-        logger.info("Reading video file ...")
+        stdout_logger.info("Reading video file ...")
         camera = cv2.VideoCapture(conf["video_path"])
+        stdout_logger.info("Finished reading video file")
     elif conf["image_path"]:
         # reading from list of images with proper name format
-        logger.info("Reading images ...")
+        stdout_logger.info("Reading images ...")
         camera = cv2.VideoCapture(conf["image_path"], cv2.CAP_IMAGES)
+        stdout_logger.info("Finished reading images")
     else:
         # reading from webcam feed
-        logger.info("Reading webcam feed ...")
+        stdout_logger.info("Reading webcam feed ...")
         camera = cv2.VideoCapture(0)
         time.sleep(0.25)
+        stdout_logger.info("Finished reading webcam feed")
 
     # Save configuration file and command line
     if conf["saved_folder"]:
@@ -308,6 +312,7 @@ if __name__ == '__main__':
     ###########################
     # Processing images/video #
     ###########################
+    stdout_logger.info("Start of images/video processing ...")
 
     # initialize the first/average frame in the video file/webcam stream
     # NOTE 1: first frame can be used to model the background of the video stream
@@ -352,6 +357,7 @@ if __name__ == '__main__':
                     if conf["saved_folder"]:
                         bi_fname = "background_image.{}".format(conf["image_format"])
                         bi_fname = os.path.join(conf["saved_folder"], bi_fname)
+                        # TODO: overwrite_image is not really necessary since the folder name is unique
                         write_image(bi_fname, frame, conf["overwrite_image"])
                 else:
                     assert conf["background_model"] == "weighted_average"
@@ -402,7 +408,9 @@ if __name__ == '__main__':
             cv2.putText(frame, "Room Status: {}".format(text), (10, 20),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             if conf["show_datetime"]:
-                cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
+                datetime_now = datetime.datetime.now()
+                datetime_now = datetime_now.replace(hour=15)
+                cv2.putText(frame, datetime_now.strftime("%A %d %B %Y %I:%M:%S%p"),
                             (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
             cv2.putText(frame, "Frame # {}".format(frame_num),
                         (frame.shape[1] - 90, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
@@ -439,11 +447,17 @@ if __name__ == '__main__':
         else:
             logger.debug("Skipping frame number {}".format(frame_num))
 
+        if frame_num == 2:
+            ipdb.set_trace()
+
         # update frame number
         frame_num += 1
 
+    stdout_logger.info("End of images/video processing")
     logger.info("Number of frames processed: {}".format(frame_num - 1))
 
     # cleanup the camera and close any open windows
     camera.release()
     cv2.destroyAllWindows()
+
+    stdout_logger.info("End of application")

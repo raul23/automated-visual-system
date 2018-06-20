@@ -37,7 +37,11 @@ setup with [logging_conf.json](#logging-options-loggingconfjson).
 ## Sample GIFs and videos
 Here are some sample GIFs and videos of how the two basic background
 substitution methods work when applied on some of the images from the
-[SBMnet dataset](http://pione.dinf.usherbrooke.ca/dataset/): ...
+[SBMnet dataset](http://pione.dinf.usherbrooke.ca/dataset/):
+
+![test](./samples/first_frame/first_frame_3_videos.gif "'first frame' background model")
+
+![test](./samples/weighted_average/weighted_average_3_videos.gif "'weighted average' background model")
 
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts: [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
@@ -74,19 +78,27 @@ I tested the code with Python 3.6, and macOS Sierra 10.12.6.
 The `motion_detector.py` script has the following configuration options (defined
 in [conf.json](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/conf.json)):
 * `disable_logging`: a boolean variable (true/false) that specifies whether
-logging should be disabled.
+logging should be disabled. If logging is disabled, then the console will be
+used for writing the messages.
 * `logging_conf_path`: absolute path to the JSON configuration file for setting
-up logging.
-* `background_model`: choices are {"first_frame", "weighted_average"}. It is the
-type of background model, e.g. weighted average of frames.
-* `video_path`: full path to the video to be processed.
+up logging. Default is **logging_conf.json**.
+* `background_model`: choices are {"**first_frame**", "**weighted_average**"}.
+It is the type of background model. `first_frame` refers to the background model
+where the first frame is used as model of the background. `weighted_average`
+refers to modeling the background as a weighted average of the past and current
+frame.
+* `video_path`: full path to the video to be processed. If no video provided,
+leave option empty, i.e. `video_path`=""
 * `image_path`: full path to the sequence of images to be processed.
 **Important**: the images must follow a naming pattern with zero paddings,
-e.g. image%06d.jpg.
+e.g. image%06d.jpg. If no images provided, leave option empty, i.e.
+`image_path`=""
 * `base_saved_directory`: full path to the **main directory** for saving all the
 results from running the scripts, e.g. debugging logs, security feed images.
 Each run of the script will write in a separate folder (named as
-'YYYYMMDD-HHMMSS-image_results') within `base_saved_directory/`
+'YYYYMMDD-HHMMSS-image_results') within `base_saved_directory/`. **IMPORTANT**:
+if option left as empty (`base_saved_directory`=""), then no images will be
+saved.
 * `save_security_feed_images`: a boolean variable (true/false) that specifies
 whether the 'security feed' images will be saved. These are the images with the
 bounding boxes around the detected moving objects. TODO: add link to image
@@ -99,29 +111,31 @@ the 'thresholded' images will be saved. These are the binary images created out
 of the 'frame delta' grayscale images: the foreground is white and the
 background black. TODO: add link to image
 * `overwrite_image`: a boolean variable (true/false) that specifies whether the
-already saved images in `.../base_saved_directory/` can be overwritten.
+already saved images in `.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`
+can be overwritten.
 * `image_format`: choices are {"png", "jpg", "jpeg"}. This is the format used
-when saving the resulting images. If image format is not supported, png format
-is used by default.
+when saving the resulting images. If the entered image format is not supported,
+png format is used by default.
 * `show_video`: a boolean variable (true/false) that specifies whether to show
 the videos (for the different types of images) on screen.
 * `start_frame`: an integer variable (default is 1) that specifies the starting
 frame to be processed.
 * `end_frame`: an integer variable (default is 0) that specifies the ending
 frame to be processed. 0 refers to the last frame.
-* `min_area`: minimum size (in pixels) for a region of an image to be considered
-actual “motion”. If the region (contour) is too small, then it will be ignored,
-i.e. it will not be considered as motion.
+* `min_area`: an integer variable (default is 500) that specifies the minimum
+size (500 pixels) for a region of an image to be considered actual “motion”. If
+the region (contour) is too small, then it will be ignored, i.e. it will not be
+considered as motion.
 * `delta_thresh`: an integer variable (default is 25) that specifies the
 threshold value used for generating a binary image (thresholded image) out of a
 grayscale image ('frame delta' image). Every pixel in the 'frame delta' image
 greater than `delta_thresh` will be converted to white (i.e. foreground), and
 the other pixels to black (i.e. background).
-* `resize_image_width`: an integer variable (default is 500 pixels wide) that
+* `resize_image_width`: an integer variable (default is 500) that
 specifies the width in pixels the image should be resized to. If
 `resize_image_width` is 0, then the image will not be resized.
 * `show_datetime`: a boolean variable (true/false) that specifies whether to
-show the date & time on each of the video.
+show the actual date & time on the 'security feed' video.
 * `gaussian_kernel_size`: a `dict` variable that specifies the width and height
 of the Gaussian kernel used for blurring an image:
   * `width`: an integer variable (default is 21) that specifies the width of the
@@ -154,6 +168,14 @@ want. Thus, you can leave the default `conf.json` as a template, and have your
 own configuration file, named for example `my_conf.json`, that will be called
 when running the script.
 
+Same for `logging_conf.json`, you could name it whatever you want, and refer it
+in `conf.json`. Thus, `logging_conf.json` could also be used as a template.
+
+**IMPORTANT:** when running the script for the first time, it might take some
+time reading the images if there are a lot of them (e.g. more than 1000). The
+next time the script is run, since the images are already loaded on memory, the
+images will be read quickly.
+
 ### Script Inputs/Outputs
 The system can take as **inputs**:
 * a video from a file (e.g. a pre-recorded security camera video), or your
@@ -166,7 +188,8 @@ The system **outputs** the following by *default* within the folder
 <sup id="go_back_note_01"><a href="#note_01">[1]</a></sup>:
 * `background_image.png`: image representing the background. Depending on the
 background model selected (*see the* `background_model` *option*), it can
-correspond to the first frame or a weighted average of current and past frames.
+correspond to the first frame or a weighted average of the past and current
+frames.
 * `command.txt`: the **Python** command used for running the `motion_detector.py`
 script
 * `conf.json`: JSON configuration storing the script options. For the detailed
