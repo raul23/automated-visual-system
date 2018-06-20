@@ -48,8 +48,8 @@ frames are shown, @ 4x normal speed</p>
 <p align="center"><b>Weighted average</b> background model: only the first 300
 first frames are shown, @ 4x normal speed</p>
 <br/>
-These are the corresponding **complete** videos for each of the two background
-models:
+These are the corresponding <b>complete</b> videos for each of the two
+background models:
 
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts: [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
