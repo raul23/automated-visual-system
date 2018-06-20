@@ -41,13 +41,13 @@ substitution methods work when applied on some of the images from the
 
 <p align="center"><img src="https://4.bp.blogspot.com/-5NvDy5VXaaE/WynFtunOb-I/AAAAAAAAAGk/mnaTy9grYbsOwMenv72PGt0vBmxfVcmkwCKgBGAs/s1600/first_frame_3_videos.gif"/></p>
 <p align="center"><b>First frame</b> background model: only the first 300 first
-frames (14 seconds of actual video) are shown, @ 4x normal speed</p>
+frames are shown, @ 4x normal speed</p>
 <br/>
 <br/>
 <p align="center"><img src="https://4.bp.blogspot.com/-StAM8N9yHDU/WyqzyZCN-9I/AAAAAAAAAH4/6eQP5ehsodUu4PMzR4IEjbDH3NA4HrmrgCLcBGAs/s1600/splitscreen_3_videos_trim_300_first_frames_fast_4x_youtube_720p30_gif_13fps_640x400.gif"/></p>
-<p align="center"><b>Weighted average</b> background model: only the first 300 first
-frames (13 seconds of actual video) are shown, @ 4x normal speed</p>
-
+<p align="center"><b>Weighted average</b> background model: only the first 300
+first frames are shown, @ 4x normal speed</p>
+<br/>
 These are the corresponding **complete** videos for each of the two background
 models:
 
