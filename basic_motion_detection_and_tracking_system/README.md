@@ -61,7 +61,7 @@ script:
 moving object, <a href="#save_security_feed_images">v</a> </p>
 <br/>
 <p id="frame_delta_sample_image" align="center"><img src="./samples/frame_delta_000117.jpeg"/></p>
-<p align="center"><b>Frame delta</b> image: absolute difference between the current grayscale frame and the image representing the background, <a href="#save_frame_delta_images">v</a> </p>
+<p align="center"><b>Frame delta</b> image: absolute difference between the current grayscale frame and the background image, <a href="#save_frame_delta_images">v</a> </p>
 <br/>
 <p id="thresh_sample_image" align="center"><img src="./samples/thresh_000117.jpeg"/></p>
 <p align="center"><b>Thresholded</b> image: binary images created out of the
