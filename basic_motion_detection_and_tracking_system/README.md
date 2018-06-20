@@ -39,7 +39,7 @@ Here are some sample GIFs and videos of how the two basic background
 substitution methods work when applied on some of the images from the
 [SBMnet dataset](http://pione.dinf.usherbrooke.ca/dataset/):
 
-<a href="https://4.bp.blogspot.com/-5NvDy5VXaaE/WynFtunOb-I/AAAAAAAAAGk/mnaTy9grYbsOwMenv72PGt0vBmxfVcmkwCKgBGAs/s1600/first_frame_3_videos.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="400" data-original-width="640" src="https://4.bp.blogspot.com/-5NvDy5VXaaE/WynFtunOb-I/AAAAAAAAAGk/mnaTy9grYbsOwMenv72PGt0vBmxfVcmkwCKgBGAs/s1600/first_frame_3_videos.gif" /></a>
+![](https://4.bp.blogspot.com/-5NvDy5VXaaE/WynFtunOb-I/AAAAAAAAAGk/mnaTy9grYbsOwMenv72PGt0vBmxfVcmkwCKgBGAs/s1600/first_frame_3_videos.gif)
 
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts: [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
