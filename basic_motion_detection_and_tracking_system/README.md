@@ -155,7 +155,7 @@ the image representing the background. [Frame delta sample image](#frame_delta_s
 * `save_thresh_images`: a boolean variable (true/false) that specifies whether
 the 'thresholded' images will be saved. These are the binary images created out
 of the 'frame delta' grayscale images: the foreground is white and the
-background black. [Thresholded sample image](#thesh_sample_image)
+background black. [Thresholded sample image](#thresh_sample_image)
 * `overwrite_image`: a boolean variable (true/false) that specifies whether the
 already saved images in `.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`
 can be overwritten.
