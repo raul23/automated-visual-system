@@ -50,6 +50,13 @@ first frames are shown, @ 4x normal speed</p>
 <br/>
 These are the corresponding <b>complete</b> videos for each of the two
 background models:
+<br/>
+<br/>
+<p align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kmGVtWDSwNw" frameborder="0"  allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</p>
+<br/>
+<br/>
 
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts: [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
