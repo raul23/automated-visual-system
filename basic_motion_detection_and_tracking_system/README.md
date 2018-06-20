@@ -131,19 +131,20 @@ Each run of the script will write in a separate folder (named as
 'YYYYMMDD-HHMMSS-image_results') within `base_saved_directory/`. **IMPORTANT**:
 if option left as empty (`base_saved_directory`=""), then no images will be
 saved.
-* `save_security_feed_images`: a boolean variable (true/false) that specifies
-whether the 'security feed' images will be saved. These are the images with the
-bounding boxes around the detected moving objects. [Security feed sample image](#security_feed_sample_image) <a id="save_security_feed_images"></a>
-* `save_frame_delta_images`: a boolean variable (true/false) that specifies
-whether the 'frame delta' images will be saved. These are the images that
-correspond to the absolute difference between the current grayscale frame and
-the image representing the background. [Frame delta sample image](#frame_delta_sample_image)
-<a id="save_frame_delta_images"></a>
-* `save_thresh_images`: a boolean variable (true/false) that specifies whether
-the 'thresholded' images will be saved. These are the binary images created out
-of the 'frame delta' grayscale images: the foreground is white and the
-background black. [Thresholded sample image](#thresh_sample_image)
-<a id="save_thresh_images"></a>
+* `save_security_feed_images` <a id="save_security_feed_images"></a>: a boolean
+variable (true/false) that specifies whether the 'security feed' images will be
+saved. These are the images with the bounding boxes around the detected moving
+objects. [Security feed sample image](#security_feed_sample_image)
+* `save_frame_delta_images` <a id="save_frame_delta_images"></a>: a boolean
+variable (true/false) that specifies whether the 'frame delta' images will be
+saved. These are the images that correspond to the absolute difference between
+the current grayscale frame and the image representing the background.
+[Frame delta sample image](#frame_delta_sample_image)
+* `save_thresh_images` <a id="save_thresh_images"></a>: a boolean variable
+(true/false) that specifies whether the 'thresholded' images will be saved.
+These are the binary images created out of the 'frame delta' grayscale images:
+the foreground is white and the background black.
+[Thresholded sample image](#thresh_sample_image)
 * `overwrite_image`: a boolean variable (true/false) that specifies whether the
 already saved images in `.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`
 can be overwritten.
