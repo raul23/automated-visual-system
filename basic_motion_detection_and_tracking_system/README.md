@@ -63,6 +63,8 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 " target="blank"><img src="http://img.youtube.com/vi/tC5TNWQri8E/0.jpg"
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 </p>
+<br/>
+<br/>
 
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts: [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
