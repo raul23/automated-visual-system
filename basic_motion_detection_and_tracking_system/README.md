@@ -43,6 +43,8 @@ substitution methods work when applied on some of the images from the
 
 ![test](./samples/weighted_average/weighted_average_3_videos.gif "'weighted average' background model")
 
+![test](ttps://3.bp.blogspot.com/-MQJP0igwZgY/WynFtoiIAPI/AAAAAAAAAGk/lfgrsaCDp7wBeReVNXRwFMR4AGjklQUXgCKgBGAs/s1600/weighted_average_3_videos.gif)
+
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts: [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
 and [Generate a movie from a sequence of images on a Mac]().
