@@ -72,7 +72,7 @@ full video</p>
 
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts: [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
-and [Generate a movie from a sequence of images on a Mac]().
+and [Generate a movie from a sequence of images on a Mac](TODO: add URL).
 
 ## Files description
 * `motion_detector.py`: main script that performs motion detection and tracking
@@ -245,4 +245,4 @@ The code is licensed under the GNU GPL 3 license. See the [license](https://gith
 for more details.
 
 ## Notes
-<div id="note_01">1. <a href="#go_back_note_01">^</a> Each time the script is run, ...</a></div>
+<b id="note_01">1. <a href="#go_back_note_01">^</a></b> Each time the script is run, a folder is created within ...
