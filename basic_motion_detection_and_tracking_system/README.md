@@ -41,6 +41,8 @@ substitution methods work when applied on some of the images from the
 
 ![](https://4.bp.blogspot.com/-5NvDy5VXaaE/WynFtunOb-I/AAAAAAAAAGk/mnaTy9grYbsOwMenv72PGt0vBmxfVcmkwCKgBGAs/s1600/first_frame_3_videos.gif)
 
+<p style="text-align: center;"> Test </p>
+
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts: [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
 and [Generate a movie from a sequence of images on a Mac]().
