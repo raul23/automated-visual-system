@@ -39,7 +39,7 @@ Here are some sample GIFs and videos of how the two basic background
 substitution methods work when applied on some of the images from the
 [SBMnet dataset](http://pione.dinf.usherbrooke.ca/dataset/):
 
-<p align="center"> ![](https://4.bp.blogspot.com/-5NvDy5VXaaE/WynFtunOb-I/AAAAAAAAAGk/mnaTy9grYbsOwMenv72PGt0vBmxfVcmkwCKgBGAs/s1600/first_frame_3_videos.gif) </p>
+![](https://4.bp.blogspot.com/-5NvDy5VXaaE/WynFtunOb-I/AAAAAAAAAGk/mnaTy9grYbsOwMenv72PGt0vBmxfVcmkwCKgBGAs/s1600/first_frame_3_videos.gif)
 <p align="center"> Test </p>
 
 As a side-note, if you are wondering how I generated the GIFs or videos from the
