@@ -35,12 +35,20 @@ The system can be configured through a configuration file
 setup with [logging_conf.json](#logging-options-loggingconfjson).
 
 ## Sample GIFs and videos
-Here are some sample GIFs and videos of how the two basic background
+Here are some sample GIFs of how the two basic background
 substitution methods work when applied on some of the images from the
 [SBMnet dataset](http://pione.dinf.usherbrooke.ca/dataset/):
 
 <p align="center"><img src="https://4.bp.blogspot.com/-5NvDy5VXaaE/WynFtunOb-I/AAAAAAAAAGk/mnaTy9grYbsOwMenv72PGt0vBmxfVcmkwCKgBGAs/s1600/first_frame_3_videos.gif"/></p>
-<p align="center">Test</p>
+<p align="center"><b>First frame</b> background model: only the first 300 first
+frames (14 seconds of actual video) are shown</p>
+
+<p align="center"><img src="https://3.bp.blogspot.com/-Je6UrpLh_FI/WyqvkWMKdaI/AAAAAAAAAHg/iFrLZl6Ymi4-211KL_xOEwKJTYgybxqRACKgBGAs/s1600/weighted_average_3_videos.gif"/></p>
+<p align="center"><b>Weighted average</b> background model: only the first 300 first
+frames (13 seconds of actual video) are shown</p>
+
+These are the corresponding complete videos for each of the two background
+models:
 
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts: [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
