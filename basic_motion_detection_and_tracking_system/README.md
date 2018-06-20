@@ -54,7 +54,7 @@ background models:
 <br/>
 <p align="center">
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=R2dfXV5dYyc" target="blank"><img src="http://img.youtube.com/vi/R2dfXV5dYyc/0.jpg"
-alt="IMAGE ALT TEXT HERE" width="480" height="360" border="10" /></a>
+alt="First frame background model" width="480" height="360" border="10" /></a>
 </p>
 <p align="center"><b>First frame</b> background model: click on image for full
 video</p>
@@ -63,7 +63,7 @@ video</p>
 <p align="center">
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=tC5TNWQri8E
 " target="blank"><img src="http://img.youtube.com/vi/tC5TNWQri8E/0.jpg"
-alt="IMAGE ALT TEXT HERE" width="480" height="360" border="10" /></a>
+alt="Weighted average background model" width="480" height="360" border="10" /></a>
 </p>
 <p align="center"><b>Weighted average</b> background model: click on image for
 full video</p>
