@@ -245,4 +245,8 @@ The code is licensed under the GNU GPL 3 license. See the [license](https://gith
 for more details.
 
 ## Notes
-<b id="note_01">1. <a href="#go_back_note_01">^</a></b> Each time the script is run, a folder is created within ...
+<b id="note_01">1. <a href="#go_back_note_01">^</a></b> Each time the script is
+run, a folder with the naming pattern `YYYYMMDD-HHMMSS-image_results/` is
+created within `.../base_saved_directory/`. It is inside this folder that all
+the important results will be saved, such as the configuration file used
+(`conf.json`), the logging file `debug.log`, etc
