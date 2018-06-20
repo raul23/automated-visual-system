@@ -241,7 +241,7 @@ The system **outputs** the following by *default* within the folder
 `.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`
 <sup id="go_back_note_01"><a href="#note_01">[1]</a></sup>:
 * `background_image.png`: image representing the background. Depending on the
-background model selected (*see the* `background_model` *option*), it can
+background model selected (*see the* [`background_model`](#script-configuration-options-confjson) *option*, it can
 correspond to the first frame or a weighted average of the past and current
 frames.
 * `command.txt`: the **Python** command used for running the `motion_detector.py`
