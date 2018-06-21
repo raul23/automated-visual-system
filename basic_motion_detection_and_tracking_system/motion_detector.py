@@ -405,8 +405,9 @@ if __name__ == '__main__':
 
             # draw the text (top left), timestamp (bottom left), and frame # (top right)
             # on the current frame
-            cv2.putText(frame, "Room Status: {}".format(text), (10, 20),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            # TODO: add as option the "Room Status" message
+            # cv2.putText(frame, "Room Status: {}".format(text), (10, 20),
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             if conf["show_datetime"]:
                 datetime_now = datetime.datetime.now()
                 datetime_now = datetime_now.replace(hour=15)
