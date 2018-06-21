@@ -215,14 +215,16 @@ usual naming pattern for loggers in **Python**: `package_name.module_name`. The
 second logger is the `root` logger with the `WARNING` severity level.
 
 ### Script usage
-`python motion_detector.py -c conf.json`
+`$ python motion_detector.py -c conf.json`
 
-`conf.json` can also refer to your own configuration file named whatever you
+**NOTES:**
+
+* `conf.json` can also refer to your own configuration file named whatever you
 want. Thus, you can leave the default `conf.json` as a template, and have your
 own configuration file, named for example `my_conf.json`, that will be called
 when running the script.
 
-Same for `logging_conf.json`, you could name it whatever you want, and refer it
+* Same for `logging_conf.json`, you could name it whatever you want, and refer it
 in `conf.json`. Thus, `logging_conf.json` could also be used as a template.
 
 **IMPORTANT:** when running the script for the first time, it might take some
