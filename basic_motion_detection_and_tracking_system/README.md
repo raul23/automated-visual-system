@@ -215,6 +215,8 @@ usual naming pattern for loggers in **Python**: `package_name.module_name`. The
 second logger is the `root` logger with the `WARNING` severity level.
 
 ### Script usage
+From a terminal, run the following command:
+
 `$ python motion_detector.py -c conf.json`
 
 **NOTES:**
