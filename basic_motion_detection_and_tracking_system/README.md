@@ -252,7 +252,7 @@ list of the script options, see
 * `logging_conf.json`: JSON configuration file for setting up the logging. For
 the list of the most important logging options, see
 [Logging options (logging_conf.json)](#logging-options-loggingconfjson).
-* `debug.log`: file storing all the written log messages
+* `debug.log`: file of all the written log messages
 * `security_feed/`: folder storing all the 'security feed' images
 * `thresh/`: folder storing all the thresholded images
 * `frame_delta/`: folder storing all the 'frame delta' images
