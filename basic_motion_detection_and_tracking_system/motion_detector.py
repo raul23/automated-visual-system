@@ -410,6 +410,7 @@ if __name__ == '__main__':
             #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             if conf["show_datetime"]:
                 datetime_now = datetime.datetime.now()
+                # TODO: remove the following
                 datetime_now = datetime_now.replace(hour=15)
                 cv2.putText(frame, datetime_now.strftime("%A %d %B %Y %I:%M:%S%p"),
                             (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
