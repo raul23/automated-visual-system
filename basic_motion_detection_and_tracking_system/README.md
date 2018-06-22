@@ -31,7 +31,7 @@ from **Adrian Rosebrock**'s tutorials @ www.pyimagesearch.com:
 
 For each motion detected, a bounding box is drawn around the object like the
 following:
-<p id="security_feed_sample_image" align="center"><img src="./samples/security_feed_000117.jpeg"/></p>
+<p align="center"><img src="./samples/security_feed_000117.jpeg"/></p>
 
 The system can be configured through a configuration file
 ([conf.json](#script-configuration-options-confjson)), and its logging can be
