@@ -150,7 +150,7 @@ Each run of the script will write in a separate folder (named as
 'YYYYMMDD-HHMMSS-image_results') within `base_saved_directory/`. **IMPORTANT**:
 if option left as empty (`base_saved_directory`:""), then no images will be
 saved.
-* `save_security_feed_images` <a id="save_security_feed_image"></a>: a boolean
+* `save_security_feed_images` <a id="save_security_feed_images"></a>: a boolean
 variable (true/false) that specifies whether the 'security feed' images will be
 saved. These are the images with the bounding boxes around the detected moving
 objects. [Security feed sample image](#security_feed_sample_image)
