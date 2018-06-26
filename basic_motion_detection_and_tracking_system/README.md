@@ -139,7 +139,8 @@ where the first frame is used as model of the background. `weighted_average`
 refers to modeling the background as a weighted average of the past and current
 frames.
 * `video_path`: full path to the video to be processed. If no video provided,
-leave option empty, i.e. `video_path`:""
+leave option empty, i.e. `video_path`:"". **Important:** if `video_path` and `image_path`
+are left empty, then the webcam feed will be used.
 * `image_path`: full path to the sequence of images to be processed.
 **Important**: the images must follow a naming pattern with zero paddings,
 e.g. image%06d.jpg. If no images provided, leave option empty, i.e.
