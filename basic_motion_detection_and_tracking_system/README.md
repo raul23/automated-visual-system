@@ -35,7 +35,7 @@ following:
 
 The system can be configured through a configuration file
 ([conf.json](#script-configuration-options-confjson)), and its logging can be
-setup with [logging_conf.json](#logging-options-loggingconfjson).
+setup with [logging_conf.json](#logging-options-logging_confjson).
 
 ## Sample GIFs, videos, and images
 Here are some sample GIFs of how the two basic background
