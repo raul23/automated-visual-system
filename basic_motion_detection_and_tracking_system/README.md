@@ -138,12 +138,13 @@ It is the type of background model. `first_frame` refers to the background model
 where the first frame is used as model of the background. `weighted_average`
 refers to modeling the background as a weighted average of the past and current
 frames.
-* `video_path`: full path to the video to be processed. If no video provided,
-leave option empty, i.e. `video_path`:"". **Important:** if `video_path` and `image_path`
-are left empty, then the webcam feed will be used.
-* `image_path`: full path to the sequence of images to be processed.
-**Important**: the images must follow a naming pattern with zero paddings,
-e.g. image%06d.jpg. If no images provided, leave option empty, i.e.
+* `video_path` <a id="video_path"></a>: full path to the video to be processed.
+If no video provided, leave option empty, i.e. `video_path`:"". **Important:**
+if `video_path` and `image_path` are left empty, then the webcam feed will be
+used.
+* `image_path` <a id="image_path"></a>: full path to the sequence of images to
+be processed. **Important**: the images must follow a naming pattern with zero
+paddings, e.g. image%06d.jpg. If no images provided, leave option empty, i.e.
 `image_path`:""
 * `base_saved_directory`: full path to the **main directory** for saving all the
 results from running the scripts, e.g. debugging logs, security feed images.
@@ -237,10 +238,10 @@ images will be read quickly.
 
 ### Script Inputs/Outputs
 The system can take as **inputs**:
-* a video from a file (e.g. a pre-recorded security camera video), or your
-webcam feed.
+* a video from a file (defined in <a href="#video_path">`video_path`
+</a>), or your webcam feed (leave `video_path` and `image_path` empty)
 * an image sequence (**png** or **jpg**) having the naming pattern with zero
-paddings, e.g. image%06d.jpg.
+paddings, e.g. image%06d.jpg, and defined in <a href="#image_path">`image_path`.
 
 The system **outputs** the following by *default* within the folder
 `.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`
