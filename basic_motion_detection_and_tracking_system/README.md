@@ -210,7 +210,7 @@ The most important handlers are for writing logs to files
 default, the log messages `debug.log` will be saved in
 `.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`.
 * `loggers`: list of all the loggers along with their options (e.g. severity
-level) and handlers. By default, two loggers are available: one logger for the `motion_detector.py` script named `basic_motion_detection_and_tracking_system.motion_detector` which follows the
+level) and handlers. By default, two loggers are available. One logger for the `motion_detector.py` script named `basic_motion_detection_and_tracking_system.motion_detector` which follows the
 usual naming pattern for loggers in **Python**: `package_name.module_name`. The
 second logger is the `root` logger with the `WARNING` severity level.
 
