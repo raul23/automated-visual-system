@@ -1,20 +1,18 @@
 # Basic motion detection and tracking system
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-- [Basic motion detection and tracking system](#basic-motion-detection-and-tracking-system)
-	- [Introduction](#introduction)
-	- [Sample GIFs, videos, and images](#sample-gifs-videos-and-images)
-	- [Files description](#files-description)
-	- [Installation and dependencies](#installation-and-dependencies)
-	- [Options, usage, and inputs/outputs](#options-usage-and-inputsoutputs)
-		- [Script configuration options (conf.json)](#script-configuration-options-confjson)
-		- [Logging options (logging_conf.json)](#logging-options-logging_confjson)
-		- [Script usage](#script-usage)
-		- [Script Inputs/Outputs](#script-inputsoutputs)
-	- [Roadmap](#roadmap)
-	- [License](#license)
-	- [Notes](#notes)
+- [Introduction](#introduction)
+- [Sample GIFs, videos, and images](#sample-gifs-videos-and-images)
+- [Files description](#files-description)
+- [Installation and dependencies](#installation-and-dependencies)
+- [Options, usage, and inputs/outputs](#options-usage-and-inputsoutputs)
+	- [Script configuration options (conf.json)](#script-configuration-options-confjson)
+	- [Logging options (logging_conf.json)](#logging-options-logging_confjson)
+	- [Script usage](#script-usage)
+	- [Script Inputs/Outputs](#script-inputsoutputs)
+- [Roadmap](#roadmap)
+- [License](#license)
+- [Notes](#notes)
 
 <!-- /TOC -->
 
