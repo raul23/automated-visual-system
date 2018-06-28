@@ -89,8 +89,8 @@ black, <a href="#save_thresh_images">v</a> </p>
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts:
 * [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
-* [How to make a splitscreen movie with iMovie and OpenShot (Mac)](test "TODO: add URL")
-* [Make a movie from a sequence of images (Mac)](test "TODO: add URL")
+* [Make a split screen movie with iMovie and OpenShot (Mac)](http://progsharing.blogspot.com/2018/06/make-split-screen-movie-with-imovie-and.html)
+* [Make a movie from a sequence of images (Mac)](http://progsharing.blogspot.com/2018/06/make-movie-from-sequence-of-images-mac.html)
 
 ## Files description
 * `motion_detector.py`: main script that performs motion detection and tracking
