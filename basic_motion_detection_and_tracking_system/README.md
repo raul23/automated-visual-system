@@ -17,7 +17,7 @@
 <!-- /TOC -->
 
 ## Introduction
-A basic motion detection and tracking system is implemented using two basic
+A simple motion detection and tracking system is implemented using two **basic**
 background substitution models:
 * First background model: **first frame** taken to model the background
 * Second background model: **weighted average** of frames
