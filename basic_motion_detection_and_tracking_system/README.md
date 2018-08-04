@@ -239,7 +239,7 @@ The system can take as **inputs**:
 * a video from a file (defined in <a href="#video_path">`video_path`
 </a>), or your webcam feed (leave `video_path` and `image_path` empty)
 * an image sequence (**png** or **jpg**) having the naming pattern with zero
-paddings, e.g. image%06d.jpg, and defined in <a href="#image_path">`image_path`.
+paddings, e.g. image%06d.jpg, and defined in <a href="#image_path">`image_path`</a>.
 
 The system **outputs** the following by *default* within the folder
 `.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`
