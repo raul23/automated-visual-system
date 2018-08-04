@@ -109,7 +109,7 @@ writes to a file.
 These are the steps to use the Python script `motion_detector.py`:
 1. Install the dependencies defined below
 2. Clone the repository and extract it
-3. You can now run the main script `motion_detector.py` @ `.../basic_motion_detection_and_tracking_system`. Go to the section
+3. You can now run the main script [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py). Go to the section
 [Script usage](#script-usage) for more details on script usage.
 
 Dependencies:
