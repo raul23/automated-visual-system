@@ -198,7 +198,7 @@ of the Gaussian kernel used for blurring the grayscale image:
 	the Gaussian kernel.
 
 ### Logging options (logging_conf.json)
-The `motion_detector.py` script has the following important **logging**
+The [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py) script has the following important **logging**
 configuration options (defined in [logging_conf.json](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/logging_conf.json)):
 * `formatters`: list of formatters. Two types of formatters (`verbose` and
 	`simple`) are available by default depending on how much information you need
