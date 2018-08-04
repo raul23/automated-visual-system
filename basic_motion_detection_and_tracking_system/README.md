@@ -93,20 +93,20 @@ test images, check my blog posts:
 * [Make a movie from a sequence of images (Mac)](http://progsharing.blogspot.com/2018/06/make-movie-from-sequence-of-images-mac.html)
 
 ## Files description
-* `motion_detector.py`: main script that performs motion detection and tracking
+* [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py): main script that performs motion detection and tracking
 of objects on images/videos
-* `imutils.py`: module that only has the necessary functions from the
+* [`imutils.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/imutils.py): module that only has the necessary functions from the
 [`imutils`](https://github.com/jrosebr1/imutils) package from
 [Adrian Rosebrock](https://www.pyimagesearch.com/). Hence, it is not necessary
 to install the `imutils` package if only very few functions are used. For the
 moment, only the `resize()` function from the `imutils` package is used in the
 script.
-* `conf.json`: **main** configuration options
-* `logging_conf.json`: **logging** configuration options. By default, logging
+* [`conf.json`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/conf.json): **main** configuration options
+* [`logging_conf.json`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/logging_conf.json): **logging** configuration options. By default, logging
 writes to a file.
 
 ## Installation and dependencies
-These are the steps to use the Python script `motion_detector.py`:
+These are the steps to use the Python script motion_detector.py:
 1. Install the dependencies defined below
 2. Clone the repository and extract it
 3. You can now run the main script [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py). Go to the section
