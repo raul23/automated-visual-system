@@ -106,7 +106,7 @@ script.
 writes to a file.
 
 ## Installation and dependencies
-These are the steps to use the Python script motion_detector.py:
+These are the steps to use the Python script [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py):
 1. Install the dependencies defined below
 2. Clone the repository and extract it
 3. You can now run the main script [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py). Go to the section
@@ -124,7 +124,7 @@ if you need guidance on installing OpenCV 3 on macOS with Homebrew.
 
 ### Script configuration options (conf.json)
 
-The `motion_detector.py` script has the following configuration options (defined
+The [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py) script has the following configuration options (defined
 in [conf.json](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/conf.json)):
 * `disable_logging`: a boolean variable (true/false) that specifies whether
 logging should be disabled. If logging is disabled, then the console will be
