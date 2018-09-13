@@ -449,9 +449,6 @@ if __name__ == '__main__':
         else:
             logger.debug("Skipping frame number {}".format(frame_num))
 
-        if frame_num == 2:
-            ipdb.set_trace()
-
         # update frame number
         frame_num += 1
 
