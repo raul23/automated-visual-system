@@ -1,4 +1,4 @@
-# automated_visual_surveillance_system
+# automated_visual_surveillance_system [WORK-IN-PROGRESS]
 The goal of this project is to develop an automated visual surveillance system consisting of a motion detection and tracking system among the various components.
 
 **Directories description:**
