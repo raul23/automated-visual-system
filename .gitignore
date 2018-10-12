@@ -123,3 +123,6 @@ notes.txt
 # my json config and logging files
 my_conf.json
 my_logging_conf.json
+
+# Test image
+test.jpg
