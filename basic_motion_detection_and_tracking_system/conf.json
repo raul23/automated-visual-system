@@ -8,7 +8,6 @@
     "save_security_feed_images": true,
     "save_frame_delta_images": true,
     "save_thresh_images": true,
-    "overwrite_image": true,
     "image_format": "png",
     "show_video": true,
     "start_frame": 1,

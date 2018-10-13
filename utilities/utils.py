@@ -95,6 +95,6 @@ def write_image(path, image, overwrite_image=True):
             cv2.imwrite(path, image)
         else:
             raise WriteImageError("File {} already exists and `overwrite` is "
-                                  "switched off".format(path))
+                                  "False".format(path))
     else:
         cv2.imwrite(path, image)

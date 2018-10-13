@@ -287,7 +287,7 @@ if __name__ == '__main__':
                                                   inum,
                                                   conf["image_format"])
                         fname = os.path.join(conf["saved_folder"], iname ,fname)
-                        write_image(fname, image, conf["overwrite_image"])
+                        write_image(fname, image)
                     else:
                         logger.debug("{} image not saved: frame # {}".format(
                                      iname, frame_num))
