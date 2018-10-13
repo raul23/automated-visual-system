@@ -17,11 +17,16 @@
         "filename": "debug.log",
         "mode": "w",
         "formatter": "verbose"
+      },
+      "console": {
+        "level": "DEBUG",
+        "class": "logging.StreamHandler",
+        "formatter": "simple"
       }
     },
     "loggers": {
-      "basic_motion_detection_and_tracking_system.motion_detector": {
-        "handlers": ["file"],
+      "basic_motion_detection_and_tracking_system.run_system": {
+        "handlers": ["file", "console"],
         "level": "DEBUG",
         "propagate": false
       }
