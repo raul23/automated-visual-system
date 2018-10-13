@@ -138,12 +138,12 @@ refers to modeling the background as a weighted average of the past and current
 frames.
 * `video_filepath` <a id="video_filepath"></a>: full path to the video to be processed.
 If no video provided, leave option empty, i.e. `video_filepath`:"". **Important:**
-if `video_filepath` and `image_filepath` are left empty, then the webcam feed will be
+if `video_filepath` and `image_dirpath` are left empty, then the webcam feed will be
 used.
-* `image_filepath` <a id="image_filepath"></a>: full path to the sequence of images to
+* `image_dirpath` <a id="image_dirpath"></a>: full path to the sequence of images to
 be processed. **Important**: the images must follow a naming pattern with zero
 paddings, e.g. image%06d.jpg. If no images provided, leave option empty, i.e.
-`image_filepath`:""
+`image_dirpath`:""
 * `reports_dirpath`: full path to the **main directory** for saving all the
 results from running the scripts, e.g. debugging logs, security feed images.
 Each run of the script will write in a separate folder (named as
@@ -237,9 +237,9 @@ images will be read quickly.
 ### Script Inputs/Outputs
 The system can take as **inputs**:
 * a video from a file (defined in <a href="#video_filepath">`video_filepath`
-</a>), or your webcam feed (leave `video_filepath` and `image_filepath` empty)
+</a>), or your webcam feed (leave `video_filepath` and `image_dirpath` empty)
 * an image sequence (**png** or **jpg**) having the naming pattern with zero
-paddings, e.g. image%06d.jpg, and defined in <a href="#image_filepath">`image_filepath`</a>.
+paddings, e.g. image%06d.jpg, and defined in <a href="#image_dirpath">`image_dirpath`</a>.
 
 The system **outputs** the following by *default* within the folder
 `.../reports_dirpath/YYYYMMDD-HHMMSS-image_results/`
