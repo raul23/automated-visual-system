@@ -136,19 +136,19 @@ It is the type of background model. `first_frame` refers to the background model
 where the first frame is used as model of the background. `weighted_average`
 refers to modeling the background as a weighted average of the past and current
 frames.
-* `video_path` <a id="video_path"></a>: full path to the video to be processed.
-If no video provided, leave option empty, i.e. `video_path`:"". **Important:**
-if `video_path` and `image_path` are left empty, then the webcam feed will be
+* `video_filepath` <a id="video_filepath"></a>: full path to the video to be processed.
+If no video provided, leave option empty, i.e. `video_filepath`:"". **Important:**
+if `video_filepath` and `image_filepath` are left empty, then the webcam feed will be
 used.
-* `image_path` <a id="image_path"></a>: full path to the sequence of images to
+* `image_filepath` <a id="image_filepath"></a>: full path to the sequence of images to
 be processed. **Important**: the images must follow a naming pattern with zero
 paddings, e.g. image%06d.jpg. If no images provided, leave option empty, i.e.
-`image_path`:""
-* `base_saved_directory`: full path to the **main directory** for saving all the
+`image_filepath`:""
+* `reports_dirpath`: full path to the **main directory** for saving all the
 results from running the scripts, e.g. debugging logs, security feed images.
 Each run of the script will write in a separate folder (named as
-'YYYYMMDD-HHMMSS-image_results') within `base_saved_directory/`. **IMPORTANT**:
-if option left as empty (`base_saved_directory`:""), then no images will be
+'YYYYMMDD-HHMMSS-image_results') within `reports_dirpath/`. **IMPORTANT**:
+if option left as empty (`reports_dirpath`:""), then no images will be
 saved.
 * `save_security_feed_images` <a id="save_security_feed_images"></a>: a boolean
 variable (true/false) that specifies whether the 'security feed' images will be
@@ -165,7 +165,7 @@ These are the binary images created out of the 'frame delta' grayscale images:
 the foreground is white and the background black.
 [Thresholded sample image](#thresh_sample_image)
 * `overwrite_image`: a boolean variable (true/false) that specifies whether the
-already saved images in `.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`
+already saved images in `.../reports_dirpath/YYYYMMDD-HHMMSS-image_results/`
 can be overwritten.
 * `image_format`: choices are "png", "jpg", and "jpeg". This is the format used
 when saving the resulting images. If the entered image format is not supported,
@@ -208,7 +208,7 @@ appropriate log messages](https://docs.python.org/3/howto/logging.html#handlers)
 The most important handlers are for writing logs to files
 (`logging.FileHandler`), and to the console (`logging.StreamHandler`). By
 default, the log messages `debug.log` will be saved in
-`.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`.
+`.../reports_dirpath/YYYYMMDD-HHMMSS-image_results/`.
 * `loggers`: list of all the loggers along with their options (e.g. severity
 level) and handlers. By default, two loggers are available. One logger for the `run_system.py` script named `basic_motion_detection_and_tracking_system.run_system` which follows the
 usual naming pattern for loggers in **Python**: `package_name.module_name`. The
@@ -236,13 +236,13 @@ images will be read quickly.
 
 ### Script Inputs/Outputs
 The system can take as **inputs**:
-* a video from a file (defined in <a href="#video_path">`video_path`
-</a>), or your webcam feed (leave `video_path` and `image_path` empty)
+* a video from a file (defined in <a href="#video_filepath">`video_filepath`
+</a>), or your webcam feed (leave `video_filepath` and `image_filepath` empty)
 * an image sequence (**png** or **jpg**) having the naming pattern with zero
-paddings, e.g. image%06d.jpg, and defined in <a href="#image_path">`image_path`</a>.
+paddings, e.g. image%06d.jpg, and defined in <a href="#image_filepath">`image_filepath`</a>.
 
 The system **outputs** the following by *default* within the folder
-`.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`
+`.../reports_dirpath/YYYYMMDD-HHMMSS-image_results/`
 <sup id="go_back_note_01"><a href="#note_01">[1]</a></sup>:
 * `background_image.png`: image representing the background. Depending on the
 background model selected (*see the* [`background_model`](#script-configuration-options-confjson) *option*, it can
@@ -278,6 +278,6 @@ for more details.
 ## Notes
 <b id="note_01">1. <a href="#go_back_note_01">^</a></b> Each time the script is
 run, a folder with the naming pattern `YYYYMMDD-HHMMSS-image_results` is
-created within `.../base_saved_directory/`. It is inside this folder that all
+created within `.../reports_dirpath/`. It is inside this folder that all
 the important results will be saved, such as the configuration file used
 (`conf.json`), the logging file `debug.log`, etc
