@@ -1,6 +1,6 @@
 import os
 # Own modules
-from utility.util import write_image
+from utilities.utils import write_image
 
 
 # Abstract background model

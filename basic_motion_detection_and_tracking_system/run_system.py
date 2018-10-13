@@ -20,7 +20,7 @@ from imutils import resize
 # Own modules
 from background_models.first_frame_model import FirstFrameModel
 from background_models.weighted_average_model import WeightedAverageModel
-from utility.util import get_full_command_line, setup_logging, timestamped, \
+from utilities.utils import get_full_command_line, setup_logging, timestamped, \
     unique_foldername, write_image
 # Get the logger
 logger = logging.getLogger('{}.{}'.format(os.path.basename(os.getcwd()),
