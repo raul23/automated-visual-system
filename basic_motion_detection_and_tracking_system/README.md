@@ -241,9 +241,9 @@ paddings, e.g. image%06d.jpg, and defined in <a href="#image_dirpath">`image_dir
 The system **outputs** the following by *default* within the folder
 `.../reports_dirpath/YYYYMMDD-HHMMSS-image_results/`
 <sup id="go_back_note_01"><a href="#note_01">[1]</a></sup>:
-* `background_image.png`: image representing the background. Depending on the
-background model selected (*see the* [`background_model`](#script-configuration-options-confjson) *option*, it can
-correspond to the first frame or a sequence images representing the weighted average of the past and current
+* `background_image%06d.png`: image representing the background. Depending on the
+background model selected (*see the* [`background_model`](#script-configuration-options-confjson) *option*), it can
+correspond to the first frame or a sequence of images representing the weighted average of the past and current
 frames.
 * `command.txt`: the **Python** command used for running the `run_system.py`
 script
