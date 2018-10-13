@@ -93,7 +93,7 @@ test images, check my blog posts:
 * [Make a movie from a sequence of images (Mac)](http://progsharing.blogspot.com/2018/06/make-movie-from-sequence-of-images-mac.html)
 
 ## Files description
-* [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py): main script that performs motion detection and tracking
+* [`run_system.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/run_system.py): main script that performs motion detection and tracking
 of objects on images/videos
 * [`imutils.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/imutils.py): module that only has the necessary functions from the
 [`imutils`](https://github.com/jrosebr1/imutils) package from
@@ -106,10 +106,10 @@ script.
 writes to a file.
 
 ## Installation and dependencies
-These are the steps to use the Python script [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py):
+These are the steps to use the Python script [`run_system.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/run_system.py):
 1. Install the dependencies defined below
 2. Clone the repository and extract it
-3. You can now run the main script [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py). Go to the section
+3. You can now run the main script [`run_system.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/run_system.py). Go to the section
 [Script usage](#script-usage) for more details.
 
 Dependencies:
@@ -124,7 +124,7 @@ if you need guidance on installing OpenCV 3 on macOS with Homebrew.
 
 ### Script configuration options (conf.json)
 
-The [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py) script has the following configuration options (defined
+The [`run_system.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/run_system.py) script has the following configuration options (defined
 in [conf.json](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/conf.json)):
 * `disable_logging`: a boolean variable (true/false) that specifies whether
 logging should be disabled. If logging is disabled, then the console will be
@@ -198,7 +198,7 @@ of the Gaussian kernel used for blurring the grayscale image:
 	the Gaussian kernel.
 
 ### Logging options (logging_conf.json)
-The [`motion_detector.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/motion_detector.py) script has the following important **logging**
+The [`run_system.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/run_system.py) script has the following important **logging**
 configuration options (defined in [logging_conf.json](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/logging_conf.json)):
 * `formatters`: list of formatters. Two types of formatters (`verbose` and
 	`simple`) are available by default depending on how much information you need
@@ -210,14 +210,14 @@ The most important handlers are for writing logs to files
 default, the log messages `debug.log` will be saved in
 `.../base_saved_directory/YYYYMMDD-HHMMSS-image_results/`.
 * `loggers`: list of all the loggers along with their options (e.g. severity
-level) and handlers. By default, two loggers are available. One logger for the `motion_detector.py` script named `basic_motion_detection_and_tracking_system.motion_detector` which follows the
+level) and handlers. By default, two loggers are available. One logger for the `run_system.py` script named `basic_motion_detection_and_tracking_system.run_system` which follows the
 usual naming pattern for loggers in **Python**: `package_name.module_name`. The
 second logger is the `root` logger with the `WARNING` severity level.
 
 ### Script usage
 From a terminal, run the following command:
 
-`$ python motion_detector.py -c conf.json`
+`$ python run_system.py -c conf.json`
 
 **NOTES:**
 
@@ -248,7 +248,7 @@ The system **outputs** the following by *default* within the folder
 background model selected (*see the* [`background_model`](#script-configuration-options-confjson) *option*, it can
 correspond to the first frame or a weighted average of the past and current
 frames.
-* `command.txt`: the **Python** command used for running the `motion_detector.py`
+* `command.txt`: the **Python** command used for running the `run_system.py`
 script
 * `conf.json`: JSON configuration storing the script options. For the detailed
 list of the script options, see
