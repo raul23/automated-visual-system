@@ -164,9 +164,6 @@ the current grayscale frame and the image representing the background.
 These are the binary images created out of the 'frame delta' grayscale images:
 the foreground is white and the background black.
 [Thresholded sample image](#thresh_sample_image)
-* `overwrite_image`: a boolean variable (true/false) that specifies whether the
-already saved images in `.../reports_dirpath/YYYYMMDD-HHMMSS-image_results/`
-can be overwritten.
 * `image_format`: choices are "png", "jpg", and "jpeg". This is the format used
 when saving the resulting images. If the entered image format is not supported,
 png format is used by default.
