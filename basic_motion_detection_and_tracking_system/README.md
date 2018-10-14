@@ -227,9 +227,7 @@ when running the script.
 in `conf.json`. Thus, `logging_conf.json` could also be used as a template.
 
 **IMPORTANT:** when running the script for the first time, it might take some
-time reading the images if there are a lot of them (e.g. more than 1000). The
-next run of the script, since the images are already loaded on memory, the
-images will be read quickly.
+time reading the images if there are a lot of them (e.g. more than 1000).
 
 ### Script Inputs/Outputs
 The system can take as **inputs**:
