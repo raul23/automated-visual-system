@@ -25,7 +25,7 @@ background substitution models:
 The **Python** code implementation for these two background models are based
 from **Adrian Rosebrock**'s tutorials @ www.pyimagesearch.com:
 * [first-frame background model](https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/)
-* [weighted-average-of-frames backgroundmodel](https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/)
+* [weighted-average-of-frames background model](https://www.pyimagesearch.com/2015/06/01/home-surveillance-and-motion-detection-with-the-raspberry-pi-python-and-opencv/)
 
 For each motion detected, a bounding box is drawn around the object like the
 following:
