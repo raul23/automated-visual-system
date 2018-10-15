@@ -90,11 +90,8 @@ def unique_foldername(folder_path):
 
 
 def write_image(path, image, overwrite_image=True):
-    if os.path.isfile(path):
-        if overwrite_image:
-            cv2.imwrite(path, image)
-        else:
-            raise WriteImageError("File {} already exists and `overwrite` is "
-                                  "False".format(path))
+    if os.path.isfile(path) and not overwrite_image:
+        raise WriteImageError("File '{}' already exists and `overwrite` is "
+                              "False".format(path))
     else:
         cv2.imwrite(path, image)
