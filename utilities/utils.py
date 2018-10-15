@@ -14,7 +14,7 @@ logger = logging.getLogger('{}.{}'.format(
 
 
 class WriteImageError(Exception):
-    """Raised when an image couldn't saved to disk"""
+    """Raised when an image couldn't be saved to disk"""
 
 
 # ref.: https://stackoverflow.com/a/12412153
