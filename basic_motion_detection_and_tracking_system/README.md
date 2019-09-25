@@ -54,7 +54,7 @@ background models:
 <br/>
 <br/>
 <p align="center">
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=R2dfXV5dYyc" target="blank"><img src="http://img.youtube.com/vi/R2dfXV5dYyc/0.jpg"
+<a href="https://www.youtube.com/watch?feature=player_embedded&v=R2dfXV5dYyc" target="blank"><img src="http://img.youtube.com/vi/R2dfXV5dYyc/0.jpg"
 alt="First frame background model" width="480" height="360" border="10" /></a>
 </p>
 <p align="center">Video using the <b>first frame</b> background model: click on the image for
@@ -62,7 +62,7 @@ the full video</p>
 <br/>
 <br/>
 <p align="center">
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=tC5TNWQri8E
+<a href="https://www.youtube.com/watch?feature=player_embedded&v=tC5TNWQri8E
 " target="blank"><img src="http://img.youtube.com/vi/tC5TNWQri8E/0.jpg"
 alt="Weighted average background model" width="480" height="360" border="10" /></a>
 </p>
@@ -88,9 +88,9 @@ black, <a href="#save_thresh_images">v</a> </p>
 
 As a side-note, if you are wondering how I generated the GIFs or videos from the
 test images, check my blog posts:
-* [Make a GIF from a video file on a Mac](http://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
-* [Make a split screen movie with iMovie and OpenShot (Mac)](http://progsharing.blogspot.com/2018/06/make-split-screen-movie-with-imovie-and.html)
-* [Make a movie from a sequence of images (Mac)](http://progsharing.blogspot.com/2018/06/make-movie-from-sequence-of-images-mac.html)
+* [Make a GIF from a video file on a Mac](https://progsharing.blogspot.com/2018/06/make-gif-from-video-file-on-mac-no.html)
+* [Make a split screen movie with iMovie and OpenShot (Mac)](https://progsharing.blogspot.com/2018/06/make-split-screen-movie-with-imovie-and.html)
+* [Make a movie from a sequence of images (Mac)](https://progsharing.blogspot.com/2018/06/make-movie-from-sequence-of-images-mac.html)
 
 ## Files description
 * [`run_system.py`](https://github.com/raul23/automated_visual_surveillance_system/blob/master/basic_motion_detection_and_tracking_system/run_system.py): main script that performs motion detection and tracking
@@ -117,7 +117,7 @@ Dependencies:
 * Python 3
 
 I tested the code with Python 3.6, and macOS Sierra 10.12.6. See my
-[blog post](http://progsharing.blogspot.com/2018/05/installing-opencv-3-on-macos-with.html)
+[blog post](https://progsharing.blogspot.com/2018/05/installing-opencv-3-on-macos-with.html)
 if you need guidance on installing OpenCV 3 on macOS with Homebrew.
 
 ## Options, usage, and inputs/outputs
